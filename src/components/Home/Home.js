@@ -40,7 +40,7 @@ class Home extends Component {
           cost: 90,
         },
         {
-          title: 'Contagious Touch (Rate*2)',
+          title: 'Sickness Spreads By Touch (Rate/2)',
           click: (e) => this.upgradeInterval(e, 'contagiousTouch', 180, true, 0.5),
           show: 'contagiousTouch',
           cost: 180,
@@ -52,28 +52,112 @@ class Home extends Component {
           cost: 500,
         },
         {
-          title: 'Airborne Contagion (Rate*1.5)',
+          title: 'Airborne Contagion (Rate*0.667)',
           click: (e) => this.upgradeInterval(e, 'airborneContagion', 1000, true, 0.667),
           show: 'airborneContagion',
           cost: 1000
         },
         {
-          title: 'Infiltrate CDC (INC*4)',
-          click: (e) => this.upgradeIncrementor(e, 'infiltrateCDC', 2000, true, 4),
+          title: 'Hire A Mascot (INC*2)',
+          click: (e) => this.upgradeIncrementor(e, 'hireMascot', 1200, true, 2),
+          show: 'hireMascot',
+          cost: 1200
+        },
+        {
+          title: 'Infiltrate The CDC (INC*5)',
+          click: (e) => this.upgradeIncrementor(e, 'infiltrateCDC', 2000, true, 5),
           show: 'infiltrateCDC',
           cost: 2000
         },
         {
-          title: 'Infected Sodas (INC+5)',
-          click: (e) => this.upgradeIncrementor(e, 'infectedSodas', 2000, false, 5),
+          title: 'Infected Sodas (INC+6)',
+          click: (e) => this.upgradeIncrementor(e, 'infectedSodas', 2200, false, 6),
           show: 'infectedSodas',
-          cost: 2000
+          cost: 2200
         },
         {
-          title: 'Infected Water (Rate*3)',
+          title: 'Infected Water (Rate/3)',
           click: (e) => this.upgradeInterval(e, 'infectedWater', 2000, true, 0.333),
           show: 'infectedWater',
           cost: 2000
+        },
+        {
+          title: 'Marketing Strategy #1: "It\'s cool to be sick" (INC*5)',
+          click: (e) => this.upgradeIncrementor(e, 'marektingStrategy1', 8000, true, 5),
+          show: 'marektingStrategy1',
+          cost: 8000
+        },
+        {
+          title: 'Marketing Strategy #2: "It\'s cool to get your friends sick" (INC+12)',
+          click: (e) => this.upgradeIncrementor(e, 'marektingStrategy2', 14000, false, 12),
+          show: 'marektingStrategy2',
+          cost: 14000
+        },
+        {
+          title: 'Infect Plant Life (Rate*0.8)',
+          click: (e) => this.upgradeInterval(e, 'infectedPlants', 15000, true, 0.8),
+          show: 'infectedPlants',
+          cost: 15000
+        },
+        {
+          title: 'Marketing Strategy #3: "It\'s cool to get strangers sick" (INC+100)',
+          click: (e) => this.upgradeIncrementor(e, 'marektingStrategy3', 120000, false, 100),
+          show: 'marektingStrategy3',
+          cost: 120000
+        },
+        {
+          title: 'Make The Air Infectious" (INC*3)',
+          click: (e) => this.upgradeIncrementor(e, 'infectiousAir', 500000, true, 3),
+          show: 'infectiousAir',
+          cost: 500000
+        },
+        {
+          title: 'Marketing Strategy #4: Start An "Infection Parties" Trend (INC+500)',
+          click: (e) => this.upgradeIncrementor(e, 'marketingStrategy4', 800000, false, 500),
+          show: 'marketingStrategy4',
+          cost: 800000
+        },
+        {
+          title: 'Infect Animal Life (Rate*0.5)',
+          click: (e) => this.upgradeInterval(e, 'infectedAnimals', 850000, true, 0.5),
+          show: 'infectedAnimals',
+          cost: 850000
+        },
+        {
+          title: 'Survival of the Sickest (INC*5)',
+          click: (e) => this.upgradeIncrementor(e, 'survivalOfTheSickest', 5000000, true, 5),
+          show: 'survivalOfTheSickest',
+          cost: 5000000
+        },
+        {
+          title: 'Biological Warfare (INC+2000)',
+          click: (e) => this.upgradeIncrementor(e, 'biologicalWarfare', 6500000, false, 2000),
+          show: 'biologicalWarfare',
+          cost: 6500000
+        },
+        {
+          title: 'Catch The Disease Just By Seeing Someone who\'s sick (Rate*0.75)',
+          click: (e) => this.upgradeInterval(e, 'visualContagion', 6500000, true, 0.75),
+          show: 'visualContagion',
+          cost: 6500000
+        },
+        {
+          title: 'Hire More Employees (INC*4)',
+          click: (e) => this.upgradeIncrementor(e, 'moreEmployees', 6500000, true, 4),
+          show: 'moreEmployees',
+          cost: 6500000
+        },
+        {
+          title: 'Offer Stock Options (INC*5)',
+          click: (e) => this.upgradeIncrementor(e, 'stockOptions', 7000000, true, 5),
+          show: 'stockOptions',
+          cost: 7000000
+        },
+        {
+          title: 'Offer Overtime Pay (INC*8)',
+          click: (e) => this.upgradeIncrementor(e, 'overtimePay', 2750500, true, 8),
+          show: 'overtimePay',
+          cost: 2750500
         },
       ]
     }
