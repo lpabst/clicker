@@ -1,5 +1,3 @@
-import { settings } from 'cluster';
-
 const express = require('express');
 const bodyParser = require('body-parser');
 var massive = require('massive');
@@ -29,7 +27,10 @@ var userController = require("./userController.js");
 
 //////////Endpoints for the front end
 app.post('/api/startTimer', userController.startTimer); 
-app.post('/api/time1000', userController.time1000);
+app.post('/api/timeThousand', userController.timeThousand);
+app.post('/api/timeMillion', userController.timeMillion);
+app.post('/api/timeBillion', userController.timeBillion);
+app.post('/api/timeGameOver', userController.timeGameOver);
 
 
 app.listen(config.port, console.log("you are now connected on " + config.port));
