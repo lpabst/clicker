@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 var massive = require('massive');
 var session = require('express-session');
 var config = require('./config.js');
