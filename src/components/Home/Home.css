@@ -10,9 +10,17 @@
     user-select: none;
 }
 
+.timer{
+    font-size: 14px;
+}
+
 .score{
     font-size: 24px;
     font-weight: bold;
+}
+
+.info{
+    font-size: 18px;
 }
 
 .shop_btn{
@@ -25,6 +33,7 @@
     background: #ccc;
     border: 1px solid black;
     box-shadow: 2px 2px 3px black;
+    margin-top: 5px;
 }
 
 .btn:active{
@@ -35,9 +44,6 @@
     width: 200px;
     height: 200px;
     background: #ccc;
-    position: absolute;
-    top: 50px;
-    left: calc(50% - 100px);
     box-shadow: 1px 1px 2px black;
     z-index: 160;
 }

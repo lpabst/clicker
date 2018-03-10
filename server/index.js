@@ -1,3 +1,5 @@
+import { settings } from 'cluster';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 var massive = require('massive');
@@ -26,8 +28,8 @@ app.use(express.static(__dirname + './../build'))
 var userController = require("./userController.js");
 
 //////////Endpoints for the front end
-
-
+app.post('/api/startTimer', userController.startTimer); 
+app.post('/api/time1000', userController.time1000);
 
 
 app.listen(config.port, console.log("you are now connected on " + config.port));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 import './Home.css';
 
 
@@ -10,45 +10,77 @@ class Home extends Component {
     this.userClick = this.userClick.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
-    this.buyInfectedNeedles = this.buyInfectedNeedles.bind(this);
-    this.buyFasterInfectionRate = this.buyFasterInfectionRate.bind(this);
+    this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
+    this.upgradeInterval = this.upgradeInterval.bind(this);
 
     this.state = {
-      score: 80,
-      showShop: false,
-      autoInfect: false,
+      numInfected: 0,
+      money: 100,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
-      infectedNeedles: false,
-      fasterInfectionRate: false,
+      showShop: false,
+      autoInfect: false,
       shopItems: [
         {
-          title: 'Auto Infect',
-          click: this.buyAutoInfecter,
+          title: 'Infected Bandaids (INC*2)',
+          click: (e) => this.upgradeIncrementor(e, 'infectedBandaids', 80, true, 2),
+          show: 'infectedBandaids',
+          cost: 80
+        },
+        {
+          title: 'Hire Employee (auto click)',
+          click: (e) => this.buyAutoInfecter(e, 90),
           show: 'autoInfect',
-          cost: 20,
+          cost: 90,
         },
         {
-          title: 'Buy Infected Needles',
-          click: this.buyInfectedNeedles,
+          title: 'Contagious Touch (Rate*2)',
+          click: (e) => this.upgradeInterval(e, 'contagiousTouch', 180, true, 0.5),
+          show: 'contagiousTouch',
+          cost: 180,
+        },
+        {
+          title: 'Buy Infected Needles (INC+3)',
+          click: (e) => this.upgradeIncrementor(e, 'infectedNeedles', 500, false, 3),
           show: 'infectedNeedles',
-          cost: 50,
+          cost: 500,
         },
         {
-          title: 'Faster Infection Rate',
-          click: this.buyFasterInfectionRate,
-          show: 'fasterInfectionRate',
-          cost: 50,
-        }
+          title: 'Airborne Contagion (Rate*1.5)',
+          click: (e) => this.upgradeInterval(e, 'airborneContagion', 1000, true, 0.67),
+          show: 'airborneContagion',
+          cost: 1000
+        },
       ]
     }
 
   }
 
+  componentDidMount(){
+    // Start Timer on front end for user and back end for legit time keeping
+    this.timeMS = 0;
+    this.timer = setInterval(()=>{
+      this.timeMS += 100
+      document.getElementById('timer').innerText = (this.timeMS / 1000).toFixed(1) + 's';
+    }, 100);
+
+    axios.post('/api/startTimer')
+    .then( res => {
+      console.log(res);
+    })
+    .catch(err=>console.log(err));
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.timer);
+  }
+
   userClick(){
-    let newVal = this.state.score + this.state.autoInfectorIncrementer;
+    let newMoney = this.state.money + this.state.autoInfectorIncrementer;
+    let newNumInfected = this.state.numInfected + this.state.autoInfectorIncrementer;
     this.setState({
-      score: newVal,
+      money: newMoney,
+      numInfected: newNumInfected,
       showShop: false,
     })
   }
@@ -60,46 +92,64 @@ class Home extends Component {
     })
   }
 
-  buyAutoInfecter(e){
+  buyAutoInfecter(e, cost){
     e.stopPropagation();
-    if (this.state.score >= 20){
+    if (this.state.money >= cost){
       this.autoInfectorInterval = setInterval( () => {
         this.setState({
-          score: this.state.score + this.state.autoInfectorIncrementer
+          money: this.state.money + this.state.autoInfectorIncrementer,
+          numInfected: this.state.numInfected + this.state.autoInfectorIncrementer,
         })
       }, this.state.autoInfectorInterval)
       this.setState({
         autoInfect: true,
-        score: this.state.score - 20
+        money: this.state.money - cost
       })
     }
   }
 
-  buyInfectedNeedles(e){
+  upgradeInterval(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
-    if (this.state.score >= 50){
-      this.setState({
-        autoInfectorIncrementer: this.state.autoInfectorIncrementer + 2,
-        infectedNeedles: true,
-        score: this.state.score - 50,
-      })
-    }
-  }
 
-  buyFasterInfectionRate(e){
-    e.stopPropagation();
-    if (this.state.score >= 50){
+    let newInterval;
+    if (isPercentUpgrade){
+      newInterval = this.state.autoInfectorInterval * upgradeAmt;
+    }else{
+      newInterval = this.state.autoInfectorInterval - upgradeAmt;
+    }
+
+    if (this.state.money >= cost){
       this.setState({
-        autoInfectorInterval: 500,
-        score: this.state.score - 50,
-        fasterInfectionRate: true,
+        autoInfectorInterval: newInterval,
+        money: this.state.money - cost,
+        [upgradeName]: true,
       }, () => {
         clearInterval(this.autoInfectorInterval);
         this.autoInfectorInterval = setInterval( () => {
           this.setState({
-            score: this.state.score + this.state.autoInfectorIncrementer
+            money: this.state.money + this.state.autoInfectorIncrementer,
+            numInfected: this.state.numInfected + this.state.autoInfectorIncrementer,
           })
         }, this.state.autoInfectorInterval)
+      })
+    }
+  }
+
+  upgradeIncrementor(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
+    e.stopPropagation();
+
+    let newIncrementer;
+    if (isPercentUpgrade){
+      newIncrementer = this.state.autoInfectorIncrementer * upgradeAmt;
+    }else{
+      newIncrementer = this.state.autoInfectorIncrementer + upgradeAmt;
+    }
+
+    if (this.state.money >= cost){
+      this.setState({
+        money: this.state.money - cost,
+        autoInfectorIncrementer: newIncrementer,
+        [upgradeName]: true
       })
     }
   }
@@ -109,7 +159,11 @@ class Home extends Component {
       <div className="home">
         <div className='home_wrapper' onClick={this.userClick}>
 
-          <p className='score'>Score: {this.state.score}</p>
+          <p className='timer'>Time Elapsed: <span id='timer'></span></p>
+          <p className='score'>People Infected: {this.state.numInfected}</p>
+          <p className='score'>Money: ${this.state.money}</p>
+          <p className='info'>Incrementer (INC): {this.state.autoInfectorIncrementer.toFixed(2)}</p>
+          <p className='info'>Interval (Rate): {(this.state.autoInfectorInterval / 1000).toFixed(3)} seconds</p>
           <div className='shop_btn btn' onClick={this.toggleShop}>Shop</div>
 
           {
@@ -117,7 +171,7 @@ class Home extends Component {
               <div className='shop_wrapper'>
                 {
                   this.state.shopItems.map( (item, i) => {
-                    let color = this.state.score >= item.cost ? 'green' : 'red';
+                    let color = this.state.money >= item.cost ? 'green' : 'red';
                     return !this.state[item.show] ? <p key={i} onClick={item.click} style={{color: color}} className='shop_item' >${item.cost} - {item.title}</p> : null
                   })
                 }
