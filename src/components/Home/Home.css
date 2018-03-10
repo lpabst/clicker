@@ -4,4 +4,40 @@
     position: relative;
 }
 
+.home_wrapper{
+    width: 100%;
+    min-height: 100vh;
+    user-select: none;
+}
 
+.score{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.shop_btn{
+    width: 120px;
+    height: 30px;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    cursor: pointer;
+    background: #ccc;
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px black;
+}
+
+.btn:active{
+    box-shadow: inset 2px 2px 3px black;
+}
+
+.shop_wrapper{
+    width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+    border: 1px solid red;
+    background: #ccc;
+    position: absolute;
+    top: 100px;
+    left: 300px;
+}
