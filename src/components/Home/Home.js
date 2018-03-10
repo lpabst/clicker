@@ -11,13 +11,16 @@ class Home extends Component {
       showShop: false,
       autoInfect: false,
       autoInfectorIncrementer: 1,
+      autoInfectorInterval: 1500,
       infectedNeedles: false,
+      fasterInfectionRate: false,
     }
 
     this.updateScore = this.updateScore.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.buyInfectedNeedles = this.buyInfectedNeedles.bind(this);
+    this.buyfasterInfectionRate = this.buyfasterInfectionRate.bind(this);
   }
 
   updateScore(newVal){
@@ -36,11 +39,11 @@ class Home extends Component {
   buyAutoInfecter(e){
     e.stopPropagation();
     if (this.state.score >= 20){
-      let autoInfectorInterval = setInterval( () => {
+      this.autoInfectorInterval = setInterval( () => {
         this.setState({
           score: this.state.score + this.state.autoInfectorIncrementer
         })
-      }, 1500)
+      }, this.state.autoInfectorInterval)
       this.setState({
         autoInfect: true,
         score: this.state.score - 20
@@ -59,6 +62,24 @@ class Home extends Component {
     }
   }
 
+  buyfasterInfectionRate(e){
+    e.stopPropagation();
+    if (this.state.score >= 50){
+      this.setState({
+        autoInfectorInterval: 500,
+        score: this.state.score - 50,
+        fasterInfectionRate: true,
+      }, () => {
+        clearInterval(this.autoInfectorInterval);
+        this.autoInfectorInterval = setInterval( () => {
+          this.setState({
+            score: this.state.score + this.state.autoInfectorIncrementer
+          })
+        }, this.state.autoInfectorInterval)
+      })
+    }
+  }
+
   render() {
     return (
       <div className="home">
@@ -72,6 +93,7 @@ class Home extends Component {
             <div className='shop_wrapper'>
               {!this.state.autoInfect ? <p onClick={this.buyAutoInfecter}>$20 - Auto Infect</p> : null}
               {!this.state.infectedNeedles ? <p onClick={this.buyInfectedNeedles}>$50 - Buy Infected Needles</p> : null}
+              {!this.state.fasterInfectionRate ? <p onClick={this.buyfasterInfectionRate}>$50 - Faster Infection Rate</p> : null}
             </div>
             : null
           }
