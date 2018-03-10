@@ -130,7 +130,7 @@ class Home extends Component {
           cost: 5000000
         },
         {
-          title: 'Biological Warfare (INC+2000)',
+          title: 'Biological Warfare (INC+2,000)',
           click: (e) => this.upgradeIncrementor(e, 'biologicalWarfare', 6500000, false, 2000),
           show: 'biologicalWarfare',
           cost: 6500000
@@ -154,10 +154,16 @@ class Home extends Component {
           cost: 7000000
         },
         {
-          title: 'Offer Overtime Pay (INC*8)',
-          click: (e) => this.upgradeIncrementor(e, 'overtimePay', 2750500, true, 8),
+          title: 'Offer Overtime Pay (INC*4)',
+          click: (e) => this.upgradeIncrementor(e, 'overtimePay', 475000000, true, 4),
           show: 'overtimePay',
-          cost: 2750500
+          cost: 475000000
+        },
+        {
+          title: 'Double Overtime Pay (INC+50,000)',
+          click: (e) => this.upgradeIncrementor(e, 'doubleOvertimePay', 987654321, false, 50000),
+          show: 'doubleOvertimePay',
+          cost: 987654321
         },
       ]
     }
@@ -227,7 +233,7 @@ class Home extends Component {
       })
       .catch(err => {})
     }
-    if (!this.state.sentGameOver && newNumInfected >= 7000000){
+    if (!this.state.sentGameOver && newNumInfected >= 7000000000){
       this.setState({sentGameOver: true, timeGameOver: '...'});
       axios.post('/api/timeGameOver')
       .then( res => {
