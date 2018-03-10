@@ -8,6 +8,7 @@ class Home extends Component {
     super(props);
 
     this.userClick = this.userClick.bind(this);
+    this.handletimers = this.handletimers.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
@@ -20,6 +21,10 @@ class Home extends Component {
       autoInfectorInterval: 1500,
       showShop: false,
       autoInfect: false,
+      timeThousand: 'N/A',
+      timeMillion: 'N/A',
+      timeBillion: 'N/A',
+      timeGameOver: 'N/A',
       shopItems: [
         {
           title: 'Infected Bandaids (INC*2)',
@@ -75,14 +80,55 @@ class Home extends Component {
     clearInterval(this.timer);
   }
 
-  userClick(){
+  // When user buys the auto clicker, this function gets called, so I pass in the closeShop variable so that when the user clicks it closes the shop, but when the computer clicks it can stay open
+  userClick(closeShop){
     let newMoney = this.state.money + this.state.autoInfectorIncrementer;
     let newNumInfected = this.state.numInfected + this.state.autoInfectorIncrementer;
     this.setState({
       money: newMoney,
       numInfected: newNumInfected,
-      showShop: false,
     })
+
+    if (closeShop){
+      this.setState({showShop: false})
+    }
+
+    this.handletimers(newNumInfected);
+  }
+
+  handletimers(newNumInfected){
+    if (!this.state.sentThousand && newNumInfected >= 1000){
+      this.setState({sentThousand: true, timeThousand: '...'});
+      axios.post('/api/timeThousand')
+      .then( res => {
+        this.setState({timeThousand: res.data.time/1000 + 's'})
+      })
+      .catch(err => {})
+    }
+    if (!this.state.sentMillion && newNumInfected >= 1000000){
+      this.setState({sentMillion: true, timeMillion: '...'});
+      axios.post('/api/timeMillion')
+      .then( res => {
+        this.setState({timeMillion: res.data.time/1000 + 's'})
+      })
+      .catch(err => {})
+    }
+    if (!this.state.sentBillion && newNumInfected >= 1000000000){
+      this.setState({sentBillion: true, timeBillion: '...'});
+      axios.post('/api/timeBillion')
+      .then( res => {
+        this.setState({timeBillion: res.data.time/1000 + 's'})
+      })
+      .catch(err => {})
+    }
+    if (!this.state.sentGameOver && newNumInfected >= 7000000){
+      this.setState({sentGameOver: true, timeGameOver: '...'});
+      axios.post('/api/timeGameOver')
+      .then( res => {
+        this.setState({timeGameOver: res.data.time/1000 + 's'})
+      })
+      .catch(err => {})
+    }
   }
 
   toggleShop(e){
@@ -95,16 +141,17 @@ class Home extends Component {
   buyAutoInfecter(e, cost){
     e.stopPropagation();
     if (this.state.money >= cost){
-      this.autoInfectorInterval = setInterval( () => {
-        this.setState({
-          money: this.state.money + this.state.autoInfectorIncrementer,
-          numInfected: this.state.numInfected + this.state.autoInfectorIncrementer,
-        })
-      }, this.state.autoInfectorInterval)
+      
       this.setState({
         autoInfect: true,
         money: this.state.money - cost
       })
+      
+      // starts triggering the click function automatically (the interval time is controlled on state)
+      this.autoInfectorInterval = setInterval( () => {
+        this.userClick(false);
+      }, this.state.autoInfectorInterval)
+
     }
   }
 
@@ -124,13 +171,14 @@ class Home extends Component {
         money: this.state.money - cost,
         [upgradeName]: true,
       }, () => {
-        clearInterval(this.autoInfectorInterval);
-        this.autoInfectorInterval = setInterval( () => {
-          this.setState({
-            money: this.state.money + this.state.autoInfectorIncrementer,
-            numInfected: this.state.numInfected + this.state.autoInfectorIncrementer,
-          })
-        }, this.state.autoInfectorInterval)
+        // If the user hasn't purchased the auto clicker, then do nothing. If they have, execute this block of code
+        if (this.autoInfectorInterval){
+          // once the interval time has been updated on state, clear the old interval and create a new one using the new value on state
+          clearInterval(this.autoInfectorInterval);
+          this.autoInfectorInterval = setInterval( () => {
+            this.userClick(false);
+          }, this.state.autoInfectorInterval)
+        }
       })
     }
   }
@@ -155,14 +203,20 @@ class Home extends Component {
   }
 
   render() {
+    let inc = Math.floor(this.state.autoInfectorIncrementer);
+
     return (
       <div className="home">
-        <div className='home_wrapper' onClick={this.userClick}>
+        <div className='home_wrapper' onClick={() => this.userClick(true)}>
 
           <p className='timer'>Time Elapsed: <span id='timer'></span></p>
           <p className='score'>People Infected: {this.state.numInfected}</p>
+          <p className='timer'>Time To Infect One Thousand: {this.state.timeThousand}</p>
+          <p className='timer'>Time To Infect One Million: {this.state.timeMillion}</p>
+          <p className='timer'>Time To Infect One Billion: {this.state.timeBillion}</p>
+          <p className='timer'>Time To Infect The Whole World: {this.state.timeGameOver}</p>
           <p className='score'>Money: ${this.state.money}</p>
-          <p className='info'>Incrementer (INC): {this.state.autoInfectorIncrementer.toFixed(2)}</p>
+          <p className='info'>Incrementer (INC): {inc + (inc > 1 ? ' People' : ' Person')} infected at a time</p>
           <p className='info'>Interval (Rate): {(this.state.autoInfectorInterval / 1000).toFixed(3)} seconds</p>
           <div className='shop_btn btn' onClick={this.toggleShop}>Shop</div>
 
