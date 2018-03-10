@@ -13,6 +13,7 @@ class Home extends Component {
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
+    this.getNumInfected = this.getNumInfected.bind(this);
 
     this.state = {
       numInfected: 0,
@@ -52,9 +53,27 @@ class Home extends Component {
         },
         {
           title: 'Airborne Contagion (Rate*1.5)',
-          click: (e) => this.upgradeInterval(e, 'airborneContagion', 1000, true, 0.67),
+          click: (e) => this.upgradeInterval(e, 'airborneContagion', 1000, true, 0.667),
           show: 'airborneContagion',
           cost: 1000
+        },
+        {
+          title: 'Infiltrate CDC (INC*4)',
+          click: (e) => this.upgradeIncrementor(e, 'infiltrateCDC', 2000, true, 4),
+          show: 'infiltrateCDC',
+          cost: 2000
+        },
+        {
+          title: 'Infected Sodas (INC+5)',
+          click: (e) => this.upgradeIncrementor(e, 'infectedSodas', 2000, false, 5),
+          show: 'infectedSodas',
+          cost: 2000
+        },
+        {
+          title: 'Infected Water (Rate*3)',
+          click: (e) => this.upgradeInterval(e, 'infectedWater', 2000, true, 0.333),
+          show: 'infectedWater',
+          cost: 2000
         },
       ]
     }
@@ -62,6 +81,9 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    // Focus the home wrapper div to enable the space bar click functionality
+    document.getElementById('home_wrapper').focus();
+
     // Start Timer on front end for user and back end for legit time keeping
     this.timeMS = 0;
     this.timer = setInterval(()=>{
@@ -202,15 +224,29 @@ class Home extends Component {
     }
   }
 
+  getNumInfected(){
+    let num = this.state.numInfected;
+
+    if (num > 1000000000){
+      return (num/1000000000).toFixed(2) + ' Billion';
+    }else if (num > 1000000){
+      return (num/1000000).toFixed(2) + ' Million';
+    }else if (num > 1000){
+      return (num/1000).toFixed(2) + ' Thousand';
+    }else{
+      return num;
+    }
+  }
+
   render() {
     let inc = Math.floor(this.state.autoInfectorIncrementer);
 
     return (
       <div className="home">
-        <div className='home_wrapper' onClick={() => this.userClick(true)}>
+        <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={() => this.userClick(false)} tabIndex='0' autoFocus='true' >
 
           <p className='timer'>Time Elapsed: <span id='timer'></span></p>
-          <p className='score'>People Infected: {this.state.numInfected}</p>
+          <p className='score'>People Infected: {this.getNumInfected()}</p>
           <p className='timer'>Time To Infect One Thousand: {this.state.timeThousand}</p>
           <p className='timer'>Time To Infect One Million: {this.state.timeMillion}</p>
           <p className='timer'>Time To Infect One Billion: {this.state.timeBillion}</p>

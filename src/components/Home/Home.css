@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.home_wrapper{
+#home_wrapper{
     width: 100%;
     min-height: 100vh;
     user-select: none;
@@ -46,11 +46,18 @@
     background: #ccc;
     box-shadow: 1px 1px 2px black;
     z-index: 160;
+    padding: 0px 2px;
 }
 
 .shop_item{
     cursor: pointer;
-    border-bottom: 1px solid black;
+    border: 1px solid black;
+    margin-bottom: 4px;
     padding: 3px 0px 3px 0px;
     font-size: 12px;
+    box-shadow: 1px 1px 2px #333;
+}
+
+.shop_item:active{
+    box-shadow: inset 2px 2px 3px black;
 }
