@@ -37,7 +37,22 @@ module.exports = {
     var db = app.get('db');
     let endTime = new Date().getTime();
     let timeThousand = endTime - req.session.startTime;
-    return res.status(200).send({time: timeThousand});
+    db.thousandLeaders()
+    .then( tLeaders => {
+      for (let i = 0; i < tLeaders.length; i++){
+        if (timeThousand < tLeaders[i].score){
+          let user = req.session.username || 'anonymous';
+          i = tLeaders.length + 1;
+          db.newThousandRecord([timeThousand, user])
+          .then( done => {
+            return res.status(200).send({time: timeThousand, isRecord: true});
+          })
+          .catch(err=>console.log(err));
+        }else{
+          return res.status(200).send({time: timeThousand, isRecord: false});
+        }
+      }
+    })
   },
   
   timeMillion: (req, res) => {
