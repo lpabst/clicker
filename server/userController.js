@@ -7,11 +7,8 @@ module.exports = {
     console.log('getting leaders');
     db.thousandLeaders()
     .then( tLeaders => {
-      console.log('done t');
-      console.log(tLeaders);
       db.millionLeaders()
       .then( mLeaders => {
-        console.log(mLeaders);
         db.billionLeaders()
         .then( bLeaders => {
           db.gameOverLeaders()
