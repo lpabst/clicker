@@ -31,7 +31,7 @@ class Home extends Component {
       gameRunning: false,
       clicks: 0,
       numInfected: 0,
-      money: 100,
+      money: 100000000,
       moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,

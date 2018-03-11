@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 var massive = require('massive');
@@ -23,9 +24,14 @@ massive(config.connection)
 
 app.use(express.static(__dirname + './../build'))
 
+var loginController = require("./loginController.js");
 var userController = require("./userController.js");
 
 //////////Endpoints for the front end
+app.post('/api/login', loginController.login);
+app.post('/api/createAccount', loginController.createAccount);
+app.post('/api/playAsGuest', loginController.playAsGuest);
+
 app.get('/api/leaderboard', userController.getLeaderboard);
 app.post('/api/startTimer', userController.startTimer); 
 app.post('/api/timeThousand', userController.timeThousand);
