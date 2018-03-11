@@ -2,9 +2,8 @@ var app = require('./index.js');
 
 module.exports = {
   getLeaderboard: function(req, res){
-    var db = app.get('db');
+    const db = app.get('db');
     
-    console.log('getting leaders');
     db.thousandLeaders()
     .then( tLeaders => {
       db.millionLeaders()

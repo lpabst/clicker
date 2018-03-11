@@ -229,6 +229,9 @@ class Home extends Component {
     axios.get('/api/leaderboard')
     .then( res => {
       console.log(res);
+      this.setState({
+        fastestTimes: res.data.leaders
+      })
     })
     .catch(err => console.log(err));
   }
