@@ -42,7 +42,7 @@
 
 .shop_wrapper{
     width: 200px;
-    height: 300px;
+    height: 250px;
     background: #ccc;
     box-shadow: 1px 1px 2px black;
     padding: 1px 2px;
@@ -62,3 +62,6 @@
 .shop_item:active{
     box-shadow: inset 2px 2px 3px black;
 }
+
+
+

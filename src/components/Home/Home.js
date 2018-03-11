@@ -13,6 +13,7 @@ class Home extends Component {
     this.userClick = this.userClick.bind(this);
     this.handletimers = this.handletimers.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
+    this.toggleRiskShop = this.toggleRiskShop.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
@@ -25,6 +26,7 @@ class Home extends Component {
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
       showShop: false,
+      showRiskShop: false,
       autoInfect: false,
       timeThousand: 'N/A',
       timeMillion: 'N/A',
@@ -266,6 +268,11 @@ class Home extends Component {
     })
   }
 
+  toggleRiskShop(e){
+    e.stopPropagation();
+    this.setState({showRiskShop: !this.state.showRiskShop})
+  }
+
   buyAutoInfecter(e, cost){
     e.stopPropagation();
 
@@ -383,6 +390,16 @@ class Home extends Component {
                     return !this.state[item.show] ? <p key={i} onClick={item.click} style={{color: color}} className='shop_item' >${item.cost} - {item.title}</p> : null
                   })
                 }
+              </div>
+            : null
+          }
+
+          <div className='btn' onClick={this.toggleRiskShop}>Risk Shop</div>
+
+          {
+            this.state.showRiskShop ?
+              <div className='shop_wrapper'>
+
               </div>
             : null
           }
