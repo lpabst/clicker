@@ -20,10 +20,10 @@ module.exports = {
                 gameOver: goLeaders,
               }
             })
-          }).catch(err => console.log(err));
-        }).catch(err => console.log(err));
-      }).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+          }).catch(err => {});
+        }).catch(err => {});
+      }).catch(err => {});
+    }).catch(err => {});
 
   },
   
@@ -43,34 +43,79 @@ module.exports = {
         if (timeThousand < tLeaders[i].score){
           let user = req.session.username || 'anonymous';
           i = tLeaders.length + 1;
-          db.newThousandRecord([timeThousand, user])
-          .then( done => {
-            return res.status(200).send({time: timeThousand, isRecord: true});
-          })
-          .catch(err=>console.log(err));
+          db.newThousandRecord([timeThousand/1000, user])
+          .then( done => {})
+          .catch(err=>{});
+          return res.status(200).send({time: timeThousand, isRecord: true});
         }else{
           return res.status(200).send({time: timeThousand, isRecord: false});
         }
       }
     })
+    .catch(err=>{})
   },
   
   timeMillion: (req, res) => {
     var db = app.get('db');
     let timeMillion = new Date().getTime() - req.session.startTime;
-    return res.status(200).send({time: timeMillion});
+    db.millionLeaders()
+    .then( mLeaders => {
+      for (let i = 0; i < mLeaders.length; i++){
+        if (timeMillion < mLeaders[i].score){
+          let user = req.session.username || 'anonymous';
+          i = mLeaders.length + 1;
+          db.newMillionRecord([timeMillion/1000, user])
+          .then( done => {})
+          .catch(err=>{});
+          return res.status(200).send({time: timeMillion, isRecord: true});
+        }else{
+          return res.status(200).send({time: timeMillion, isRecord: false});
+        }
+      }
+    })
+    .catch(err=>{})
   },
   
   timeBillion: (req, res) => {
     var db = app.get('db');
     let timeBillion = new Date().getTime() - req.session.startTime;
-    return res.status(200).send({time: timeBillion});
+    db.billionLeaders()
+    .then( bLeaders => {
+      for (let i = 0; i < bLeaders.length; i++){
+        if (timeBillion < bLeaders[i].score){
+          let user = req.session.username || 'anonymous';
+          i = bLeaders.length + 1;
+          db.newBillionRecord([timeBillion/1000, user])
+          .then( done => {})
+          .catch(err=>{});
+          return res.status(200).send({time: timeBillion, isRecord: true});
+        }else{
+          return res.status(200).send({time: timeBillion, isRecord: false});
+        }
+      }
+    })
+    .catch(err=>{})
   },
   
   timeGameOver: (req, res) => {
     var db = app.get('db');
     let timeGameOver = new Date().getTime() - req.session.startTime;
-    return res.status(200).send({time: timeGameOver});
+    db.gameOverLeaders()
+    .then( goLeaders => {
+      for (let i = 0; i < goLeaders.length; i++){
+        if (timeGameOver < goLeaders[i].score){
+          let user = req.session.username || 'anonymous';
+          i = goLeaders.length + 1;
+          db.newGameOverRecord([timeGameOver/1000, user])
+          .then( done => {})
+          .catch(err=>{});
+          return res.status(200).send({time: timeGameOver, isRecord: true});
+        }else{
+          return res.status(200).send({time: timeGameOver, isRecord: false});
+        }
+      }
+    })
+    .catch(err=>{})
   },
   
 };
