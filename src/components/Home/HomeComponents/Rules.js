@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class Rules extends Component {
     render() {
-        let screenWidth = 9;
+        let screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         let screenInterface = screenWidth > 815 ? 'Click (or press space-bar)' : 'Tap';
         return (
             <section className='rules'>
