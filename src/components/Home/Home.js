@@ -11,6 +11,7 @@ class Home extends Component {
     // bindings go above state so that I can use them in my shopItems array
     this.startGame = this.startGame.bind(this);
     this.userClick = this.userClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handletimers = this.handletimers.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
     this.toggleRiskShop = this.toggleRiskShop.bind(this);
@@ -23,8 +24,9 @@ class Home extends Component {
 
     this.state = {
       gameRunning: false,
+      clicks: 0,
       numInfected: 0,
-      money: 10000,
+      money: 100,
       moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
@@ -237,11 +239,20 @@ class Home extends Component {
       return;
     }
 
+    // Check for script that is clicking over 100 times per second on average
+    let timer = document.getElementById('timer').innerText;
+    timer = Math.ceil(timer.replace(/s/, ''));
+    if (timer && this.state.clicks / timer > 100){
+      alert('Cheater! No scripts allowed');
+      return this.endGame();
+    }
+
     let newMoney = this.state.money + (this.state.autoInfectorIncrementer * this.state.moneyMultiplier);
     let newNumInfected = this.state.numInfected + this.state.autoInfectorIncrementer;
     this.setState({
       money: newMoney,
       numInfected: newNumInfected,
+      clicks: this.state.clicks + 1,
     })
 
     if (closeShop){
@@ -249,6 +260,12 @@ class Home extends Component {
     }
 
     this.handletimers(newNumInfected);
+  }
+
+  handleKeyPress(e){
+    if (this.state.gameRunning && e.keyCode === 32){
+      this.userClick(false);
+    }
   }
 
   handletimers(newNumInfected){
@@ -278,6 +295,7 @@ class Home extends Component {
     }
     if (!this.state.sentGameOver && newNumInfected >= 7000000000){
       this.setState({sentGameOver: true, timeGameOver: '...'});
+      this.endGame();
       axios.post('/api/timeGameOver')
       .then( res => {
         this.setState({timeGameOver: res.data.time/1000 + 's'})
@@ -419,17 +437,22 @@ class Home extends Component {
     }
   }
 
+  endGame(){
+    clearInterval(this.timer);
+    return this.setState({gameRunning: false})
+  }
+
   render() {
     return (
       <div className="home">
-        <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={() => this.userClick(false)} tabIndex='0' autoFocus='true' >
+        <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={this.handleKeyPress} tabIndex='0' autoFocus='true' >
 
           { this.state.gameRunning ?
               <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand} 
               timeMillion={this.state.timeMillion} timeBillion={this.state.timeBillion} 
               timeGameOver={this.state.timeGameOver} money={this.state.money} 
               autoInfectorIncrementer={this.state.autoInfectorIncrementer} 
-              autoInfectorInterval={this.state.autoInfectorInterval} />
+              autoInfectorInterval={this.state.autoInfectorInterval} clicks={this.state.clicks} />
             : <div className='start_btn btn' onClick={this.startGame} >Start Game</div>
           }
 
