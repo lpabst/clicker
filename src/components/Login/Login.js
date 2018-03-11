@@ -27,7 +27,12 @@ class Login extends Component {
         password: this.state.password,
     })
     .then( res => {
-        console.log(res);
+      if (res.data === 'ok'){
+          let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
+          window.location.href = newUrl;
+      }else if (res.data.match(/error/)){
+        alert(res.data);
+      }
     })
     .catch(err=>{});
   }
@@ -38,7 +43,12 @@ class Login extends Component {
         newPassword: this.state.newPassword,
     })
     .then( res => {
-        console.log(res);
+      if (res.data === 'ok'){
+          let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
+          window.location.href = newUrl;
+      }else if (res.data.match(/error/)){
+        alert(res.data);
+      }
     })
     .catch(err=>{});
   }
