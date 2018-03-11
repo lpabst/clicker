@@ -3,7 +3,12 @@ var app = require('./index.js');
 module.exports = {
   getLeaderboard: function(req, res){
     var db = app.get('db');
-    console.log('getting leaderboard');
+
+    db.thousandLeaders()
+    .then( tLeaders => {
+      console.log(tLeaders);
+    })
+    .catch(e);
     
   },
   
