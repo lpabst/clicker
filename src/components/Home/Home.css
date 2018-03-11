@@ -79,3 +79,19 @@
 .rules p{
     margin-bottom: 5px;
 }
+
+.leaderboard{
+    width: 300px;
+    height: 300px;
+    overflow-y: scroll;
+    background: #ccc;
+    box-shadow: 2px 2px 3px black;
+    padding: 5px 1px;
+}
+
+.leaderboard_section{
+    position: relative;
+    border: 1px solid black;
+    padding: 3px 5px;
+    box-shadow: 1px 1px 2px black;
+}

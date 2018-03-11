@@ -26,6 +26,7 @@ app.use(express.static(__dirname + './../build'))
 var userController = require("./userController.js");
 
 //////////Endpoints for the front end
+app.get('/api/leaderboard', userController.getLeaderboard);
 app.post('/api/startTimer', userController.startTimer); 
 app.post('/api/timeThousand', userController.timeThousand);
 app.post('/api/timeMillion', userController.timeMillion);

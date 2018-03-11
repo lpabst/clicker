@@ -4,6 +4,7 @@ import './Home.css';
 
 import Info from './HomeComponents/Info.js';
 import Rules from './HomeComponents/Rules.js';
+import LeaderBoard from './HomeComponents/LeaderBoard.js';
 
 class Home extends Component {
   constructor(props){
@@ -17,6 +18,7 @@ class Home extends Component {
     this.toggleShop = this.toggleShop.bind(this);
     this.toggleRiskShop = this.toggleRiskShop.bind(this);
     this.toggleRules = this.toggleRules.bind(this);
+    this.toggleLeaderBoard = this.toggleLeaderBoard.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
@@ -35,6 +37,7 @@ class Home extends Component {
       showShop: false,
       showRiskShop: false,
       showRules: false,
+      showLeaderBoard: false,
       autoInfect: false,
       timeThousand: 'N/A',
       timeMillion: 'N/A',
@@ -212,8 +215,22 @@ class Home extends Component {
           cost: 850000
         },
       ],
+      fastestTimes: {
+        thousand: [1000, 1120.20, 1253.36, 1855.32, 2210.25],
+        million: [321, 323, 354, 545, 896],
+        billion: [125, 126, 127, 159, 189],
+        gameOver: [1, 2, 3, 4, 5],
+      }
     }
 
+  }
+
+  componentDidMount(){
+    axios.get('/api/leaderboard')
+    .then( res => {
+      console.log(res);
+    })
+    .catch(err => console.log(err));
   }
 
   startGame(){
@@ -332,6 +349,11 @@ class Home extends Component {
   toggleRules(e){
     e.stopPropagation();
     this.setState({showRules: !this.state.showRules});
+  }
+
+  toggleLeaderBoard(e){
+    e.stopPropagation();
+    this.setState({showLeaderBoard: !this.state.showLeaderBoard});
   }
 
   buyAutoInfecter(e, cost){
@@ -505,6 +527,10 @@ class Home extends Component {
           <div className='btn' onClick={this.toggleRules}>How To Play</div>
 
           { this.state.showRules ? <Rules toggleRules={this.toggleRules} /> : null }
+
+          <div className='btn' onClick={this.toggleLeaderBoard}>LeaderBoard</div>
+
+          {this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
 
         </div>
       </div>
