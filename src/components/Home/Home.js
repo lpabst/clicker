@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './Home.css';
 
+import Info from './Info/Info.js';
 
 class Home extends Component {
   constructor(props){
     super(props);
 
+    // bindings go above state so that I can use them in my shopItems array
+    this.startGame = this.startGame.bind(this);
     this.userClick = this.userClick.bind(this);
     this.handletimers = this.handletimers.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
@@ -16,6 +19,7 @@ class Home extends Component {
     this.getNumInfected = this.getNumInfected.bind(this);
 
     this.state = {
+      gameRunning: false,
       numInfected: 0,
       money: 100,
       autoInfectorIncrementer: 1,
@@ -171,21 +175,29 @@ class Home extends Component {
   }
 
   componentDidMount(){
-    // Focus the home wrapper div to enable the space bar click functionality
-    document.getElementById('home_wrapper').focus();
 
-    // Start Timer on front end for user and back end for legit time keeping
-    this.timeMS = 0;
-    this.timer = setInterval(()=>{
-      this.timeMS += 100
-      document.getElementById('timer').innerText = (this.timeMS / 1000).toFixed(1) + 's';
-    }, 100);
+  }
 
-    axios.post('/api/startTimer')
-    .then( res => {
-      console.log(res);
+  startGame(){
+    this.setState({
+      gameRunning: true
+    }, () => {
+      // Focus the home wrapper div to enable the space bar click functionality
+      document.getElementById('home_wrapper').focus();
+  
+      // Start Timer on front end for user and back end for legit time keeping
+      this.timeMS = 0;
+      this.timer = setInterval(()=>{
+        this.timeMS += 100
+        document.getElementById('timer').innerText = (this.timeMS / 1000).toFixed(1) + 's';
+      }, 100);
+  
+      axios.post('/api/startTimer')
+      .then( res => {
+        console.log(res);
+      })
+      .catch(err=>console.log(err));
     })
-    .catch(err=>console.log(err));
   }
 
   componentWillUnmount(){
@@ -194,6 +206,10 @@ class Home extends Component {
 
   // When user buys the auto clicker, this function gets called, so I pass in the closeShop variable so that when the user clicks it closes the shop, but when the computer clicks it can stay open
   userClick(closeShop){
+    if (!this.state.gameRunning){
+      return;
+    }
+
     let newMoney = this.state.money + this.state.autoInfectorIncrementer;
     let newNumInfected = this.state.numInfected + this.state.autoInfectorIncrementer;
     this.setState({
@@ -252,6 +268,11 @@ class Home extends Component {
 
   buyAutoInfecter(e, cost){
     e.stopPropagation();
+
+    if (!this.gameRunning){
+      return;
+    }
+
     if (this.state.money >= cost){
       
       this.setState({
@@ -269,6 +290,10 @@ class Home extends Component {
 
   upgradeInterval(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
+
+    if (!this.gameRunning){
+      return;
+    }
 
     let newInterval;
     if (isPercentUpgrade){
@@ -297,6 +322,10 @@ class Home extends Component {
 
   upgradeIncrementor(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
+
+    if (!this.gameRunning){
+      return;
+    }
 
     let newIncrementer;
     if (isPercentUpgrade){
@@ -329,21 +358,20 @@ class Home extends Component {
   }
 
   render() {
-    let inc = Math.floor(this.state.autoInfectorIncrementer);
-
     return (
       <div className="home">
         <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={() => this.userClick(false)} tabIndex='0' autoFocus='true' >
 
-          <p className='timer'>Time Elapsed: <span id='timer'></span></p>
-          <p className='score'>People Infected: {this.getNumInfected()}</p>
-          <p className='timer'>Time To Infect One Thousand: {this.state.timeThousand}</p>
-          <p className='timer'>Time To Infect One Million: {this.state.timeMillion}</p>
-          <p className='timer'>Time To Infect One Billion: {this.state.timeBillion}</p>
-          <p className='timer'>Time To Infect The Whole World: {this.state.timeGameOver}</p>
-          <p className='score'>Money: ${this.state.money}</p>
-          <p className='info'>Incrementer (INC): {inc + (inc > 1 ? ' People' : ' Person')} infected at a time</p>
-          <p className='info'>Interval (Rate): {(this.state.autoInfectorInterval / 1000).toFixed(3)} seconds</p>
+          {
+            this.state.gameRunning ?
+              <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand} 
+              timeMillion={this.state.timeMillion} timeBillion={this.state.timeBillion} 
+              timeGameOver={this.state.timeGameOver} money={this.state.money} 
+              autoInfectorIncrementer={this.state.autoInfectorIncrementer} 
+              autoInfectorInterval={this.state.autoInfectorInterval} />
+            : <div className='start_btn btn' onClick={this.startGame} >Start Game</div>
+          }
+
           <div className='shop_btn btn' onClick={this.toggleShop}>Shop</div>
 
           {
@@ -364,6 +392,5 @@ class Home extends Component {
     );
   }
 }
-
 
 export default Home;
