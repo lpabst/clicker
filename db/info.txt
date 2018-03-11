@@ -1,0 +1,38 @@
+
+create table clickerUsers(
+    id serial primary key,
+    username varchar(255),
+    password varchar(255)
+)
+
+create table thousandLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
+create table millionLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
+create table billionLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
+create table gameOverLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
+select * from clickerUsers
+
+insert into clickerUsers(username, password) values ('SueB', 'SuzieGirl')
+
+select * from thousandLeaders
+order by score asc
+limit 5
