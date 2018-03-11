@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './Home.css';
 
-import Info from './Info/Info.js';
+import Info from './HomeComponents/Info.js';
+import Rules from './HomeComponents/Rules.js';
 
 class Home extends Component {
   constructor(props){
@@ -15,6 +16,7 @@ class Home extends Component {
     this.handletimers = this.handletimers.bind(this);
     this.toggleShop = this.toggleShop.bind(this);
     this.toggleRiskShop = this.toggleRiskShop.bind(this);
+    this.toggleRules = this.toggleRules.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
@@ -32,6 +34,7 @@ class Home extends Component {
       autoInfectorInterval: 1500,
       showShop: false,
       showRiskShop: false,
+      showRules: false,
       autoInfect: false,
       timeThousand: 'N/A',
       timeMillion: 'N/A',
@@ -185,22 +188,28 @@ class Home extends Component {
           cost: 1000
         },
         {
-          title: 'Pay 100 People To Infect Themselves (No Money Reward)',
-          click: (e) => this.buyInfections(e, 1000, 100),
+          title: 'Pay 1000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 1000, 1000),
           show: 'always',
           cost: 1000
         },
         {
           title: 'Pay 10,000 People To Infect Themselves (No Money Reward)',
-          click: (e) => this.buyInfections(e, 90000, 10000),
+          click: (e) => this.buyInfections(e, 9500, 10000),
+          show: 'always',
+          cost: 9500
+        },
+        {
+          title: 'Pay 100,000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 90000, 100000),
           show: 'always',
           cost: 90000
         },
         {
-          title: 'Pay 100,000 People To Infect Themselves (No Money Reward)',
-          click: (e) => this.buyInfections(e, 7000000, 100000),
+          title: 'Pay 1,000,000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 850000, 1000000),
           show: 'always',
-          cost: 7000000
+          cost: 850000
         },
       ],
     }
@@ -256,7 +265,11 @@ class Home extends Component {
     })
 
     if (closeShop){
-      this.setState({showShop: false})
+      this.setState({
+        showShop: false,
+        showRiskShop: false,
+        showRules: false,
+      })
     }
 
     this.handletimers(newNumInfected);
@@ -314,6 +327,11 @@ class Home extends Component {
   toggleRiskShop(e){
     e.stopPropagation();
     this.setState({showRiskShop: !this.state.showRiskShop})
+  }
+
+  toggleRules(e){
+    e.stopPropagation();
+    this.setState({showRules: !this.state.showRules});
   }
 
   buyAutoInfecter(e, cost){
@@ -483,6 +501,10 @@ class Home extends Component {
               </div>
             : null
           }
+
+          <div className='btn' onClick={this.toggleRules}>How To Play</div>
+
+          { this.state.showRules ? <Rules toggleRules={this.toggleRules} /> : null }
 
         </div>
       </div>
