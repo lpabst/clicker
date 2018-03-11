@@ -39,17 +39,21 @@ module.exports = {
     let timeThousand = endTime - req.session.startTime;
     db.thousandLeaders()
     .then( tLeaders => {
+      let isRecord = false;
       for (let i = 0; i < tLeaders.length; i++){
         if (timeThousand < tLeaders[i].score){
+          isRecord = true;
           let user = req.session.username || 'anonymous';
           i = tLeaders.length + 1;
           db.newThousandRecord([timeThousand/1000, user])
-          .then( done => {})
+          .then( done => {
+            return res.status(200).send({time: timeThousand, isRecord: true});
+          })
           .catch(err=>{});
-          return res.status(200).send({time: timeThousand, isRecord: true});
-        }else{
-          return res.status(200).send({time: timeThousand, isRecord: false});
         }
+      }
+      if (!isRecord){
+        return res.status(200).send({time: timeThousand, isRecord: false});
       }
     })
     .catch(err=>{})
@@ -60,17 +64,21 @@ module.exports = {
     let timeMillion = new Date().getTime() - req.session.startTime;
     db.millionLeaders()
     .then( mLeaders => {
+      let isRecord = false;
       for (let i = 0; i < mLeaders.length; i++){
         if (timeMillion < mLeaders[i].score){
+          isRecord = true;
           let user = req.session.username || 'anonymous';
           i = mLeaders.length + 1;
           db.newMillionRecord([timeMillion/1000, user])
-          .then( done => {})
+          .then( done => {
+            return res.status(200).send({time: timeMillion, isRecord: true});
+          })
           .catch(err=>{});
-          return res.status(200).send({time: timeMillion, isRecord: true});
-        }else{
-          return res.status(200).send({time: timeMillion, isRecord: false});
         }
+      }
+      if (!isRecord){
+        return res.status(200).send({time: timeMillion, isRecord: false});
       }
     })
     .catch(err=>{})
@@ -81,17 +89,21 @@ module.exports = {
     let timeBillion = new Date().getTime() - req.session.startTime;
     db.billionLeaders()
     .then( bLeaders => {
+      let isRecord = false;
       for (let i = 0; i < bLeaders.length; i++){
         if (timeBillion < bLeaders[i].score){
+          isRecord = true;
           let user = req.session.username || 'anonymous';
           i = bLeaders.length + 1;
           db.newBillionRecord([timeBillion/1000, user])
-          .then( done => {})
+          .then( done => {
+            return res.status(200).send({time: timeBillion, isRecord: true});
+          })
           .catch(err=>{});
-          return res.status(200).send({time: timeBillion, isRecord: true});
-        }else{
-          return res.status(200).send({time: timeBillion, isRecord: false});
         }
+      }
+      if (!isRecord){
+        return res.status(200).send({time: timeBillion, isRecord: false});
       }
     })
     .catch(err=>{})
@@ -102,17 +114,21 @@ module.exports = {
     let timeGameOver = new Date().getTime() - req.session.startTime;
     db.gameOverLeaders()
     .then( goLeaders => {
+      let isRecord = false;
       for (let i = 0; i < goLeaders.length; i++){
         if (timeGameOver < goLeaders[i].score){
+          isRecord = true;
           let user = req.session.username || 'anonymous';
           i = goLeaders.length + 1;
           db.newGameOverRecord([timeGameOver/1000, user])
-          .then( done => {})
+          .then( done => {
+            return res.status(200).send({time: timeGameOver, isRecord: true});
+          })
           .catch(err=>{});
-          return res.status(200).send({time: timeGameOver, isRecord: true});
-        }else{
-          return res.status(200).send({time: timeGameOver, isRecord: false});
         }
+      }
+      if (!isRecord){
+        return res.status(200).send({time: timeGameOver, isRecord: false});
       }
     })
     .catch(err=>{})

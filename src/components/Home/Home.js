@@ -11,6 +11,7 @@ class Home extends Component {
     super(props);
 
     // bindings go above state so that I can use them in my shopItems array
+    this.getLeaderBoard = this.getLeaderBoard.bind(this);
     this.startGame = this.startGame.bind(this);
     this.userClick = this.userClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -30,7 +31,7 @@ class Home extends Component {
       gameRunning: false,
       clicks: 0,
       numInfected: 0,
-      money: 100000,
+      money: 100,
       moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
@@ -226,6 +227,10 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    this.getLeaderBoard();
+  }
+
+  getLeaderBoard(){
     axios.get('/api/leaderboard')
     .then( res => {
       console.log(res);
@@ -307,6 +312,10 @@ class Home extends Component {
       axios.post('/api/timeThousand')
       .then( res => {
         this.setState({timeThousand: res.data.time/1000 + 's'})
+        console.log(res);
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
       })
       .catch(err => {})
     }
