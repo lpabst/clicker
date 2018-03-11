@@ -17,12 +17,15 @@ class Home extends Component {
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
+    this.doubleInfectionInc = this.doubleInfectionInc.bind(this);
+    this.buyInfections = this.buyInfections.bind(this);
     this.getNumInfected = this.getNumInfected.bind(this);
 
     this.state = {
       gameRunning: false,
       numInfected: 0,
-      money: 100,
+      money: 10000,
+      moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
       showShop: false,
@@ -171,12 +174,34 @@ class Home extends Component {
           show: 'doubleOvertimePay',
           cost: 987654321
         },
-      ]
+      ],
+      riskShopItems: [
+        {
+          title: 'Double your infection incrementer (INC), receive 1/3 the money',
+          click: (e) => this.doubleInfectionInc(e, 1000),
+          show: 'doubleInfectionInc',
+          cost: 1000
+        },
+        {
+          title: 'Pay 100 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 1000, 100),
+          show: 'always',
+          cost: 1000
+        },
+        {
+          title: 'Pay 10,000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 90000, 10000),
+          show: 'always',
+          cost: 90000
+        },
+        {
+          title: 'Pay 100,000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 7000000, 100000),
+          show: 'always',
+          cost: 7000000
+        },
+      ],
     }
-
-  }
-
-  componentDidMount(){
 
   }
 
@@ -212,7 +237,7 @@ class Home extends Component {
       return;
     }
 
-    let newMoney = this.state.money + this.state.autoInfectorIncrementer;
+    let newMoney = this.state.money + (this.state.autoInfectorIncrementer * this.state.moneyMultiplier);
     let newNumInfected = this.state.numInfected + this.state.autoInfectorIncrementer;
     this.setState({
       money: newMoney,
@@ -275,8 +300,7 @@ class Home extends Component {
 
   buyAutoInfecter(e, cost){
     e.stopPropagation();
-
-    if (!this.gameRunning){
+    if (!this.state.gameRunning){
       return;
     }
 
@@ -298,7 +322,7 @@ class Home extends Component {
   upgradeInterval(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
 
-    if (!this.gameRunning){
+    if (!this.state.gameRunning){
       return;
     }
 
@@ -330,7 +354,7 @@ class Home extends Component {
   upgradeIncrementor(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
 
-    if (!this.gameRunning){
+    if (!this.state.gameRunning){
       return;
     }
 
@@ -346,6 +370,37 @@ class Home extends Component {
         money: this.state.money - cost,
         autoInfectorIncrementer: newIncrementer,
         [upgradeName]: true
+      })
+    }
+  }
+
+  doubleInfectionInc(e, cost){
+    e.stopPropagation();
+
+    if (!this.state.gameRunning){
+      return;
+    }
+
+    if (this.state.money > cost){
+      this.setState({
+        moneyMultiplier: this.state.moneyMultiplier / 3,
+        autoInfectorIncrementer: this.state.autoInfectorIncrementer * 2,
+        doubleInfectionInc: true,
+      })
+    }
+  }
+
+  buyInfections(e, cost, peopleInfected){
+    e.stopPropagation();
+
+    if (!this.state.gameRunning){
+      return;
+    }
+
+    if (this.state.money > cost){
+      this.setState({
+        money: this.state.money - cost,
+        numInfected: this.state.numInfected + peopleInfected
       })
     }
   }
@@ -369,8 +424,7 @@ class Home extends Component {
       <div className="home">
         <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={() => this.userClick(false)} tabIndex='0' autoFocus='true' >
 
-          {
-            this.state.gameRunning ?
+          { this.state.gameRunning ?
               <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand} 
               timeMillion={this.state.timeMillion} timeBillion={this.state.timeBillion} 
               timeGameOver={this.state.timeGameOver} money={this.state.money} 
@@ -381,8 +435,7 @@ class Home extends Component {
 
           <div className='shop_btn btn' onClick={this.toggleShop}>Shop</div>
 
-          {
-            this.state.showShop ? 
+          { this.state.showShop ? 
               <div className='shop_wrapper'>
                 {
                   this.state.shopItems.map( (item, i) => {
@@ -396,10 +449,14 @@ class Home extends Component {
 
           <div className='btn' onClick={this.toggleRiskShop}>Risk Shop</div>
 
-          {
-            this.state.showRiskShop ?
+          { this.state.showRiskShop ?
               <div className='shop_wrapper'>
-
+                {
+                  this.state.riskShopItems.map( (item, i) => {
+                    let color = this.state.money >= item.cost ? 'green' : 'red';
+                    return !this.state[item.show] ? <p key={i} onClick={item.click} style={{color: color}} className='shop_item' >${item.cost} - {item.title}</p> : null
+                  })
+                }
               </div>
             : null
           }
