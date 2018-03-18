@@ -242,6 +242,7 @@ class Home extends Component {
   getLeaderBoard(){
     axios.get('/api/leaderboard')
     .then( res => {
+      console.log(res);
       this.setState({
         fastestTimes: res.data.leaders,
         username: res.data.username
@@ -500,11 +501,11 @@ class Home extends Component {
     let num = this.state.numInfected;
 
     if (num >= 1000000000){
-      return (num/1000000000) + ' Billion';
+      return (num/1000000000).toFixed(3) + ' Billion';
     }else if (num >= 1000000){
-      return (num/1000000) + ' Million';
+      return (num/1000000).toFixed(3) + ' Million';
     }else if (num >= 1000){
-      return (num/1000) + ' Thousand';
+      return (num/1000).toFixed(3) + ' Thousand';
     }else{
       return num;
     }

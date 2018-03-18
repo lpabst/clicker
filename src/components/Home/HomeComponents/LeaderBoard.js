@@ -8,7 +8,7 @@ class LeaderBoard extends Component {
             <section className='leaderboard'>
 
                 <div className='leaderboard_section'>
-                    <p>Fastest Times to 1 Thousand Infections</p>
+                    <p>1 Thousand Infections LeaderBoard</p>
                     {
                         ft.thousand.map((item, i) => {
                             return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>
@@ -17,7 +17,7 @@ class LeaderBoard extends Component {
                 </div>
 
                 <div className='leaderboard_section'>
-                    <p>Fastest Times to 1 Million Infections</p>
+                    <p>1 Million Infections LeaderBoard</p>
                     {
                         ft.million.map((item, i) => {
                             return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>
@@ -26,7 +26,7 @@ class LeaderBoard extends Component {
                 </div>
 
                 <div className='leaderboard_section'>
-                    <p>Fastest Times to 1 Billion Infections</p>
+                    <p>1 Billion Infections LeaderBoard</p>
                     {
                         ft.billion.map((item, i) => {
                             return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>
@@ -35,7 +35,7 @@ class LeaderBoard extends Component {
                 </div>
 
                 <div className='leaderboard_section'>
-                    <p>Fastest Times to World-Wide Infection</p>
+                    <p>World-Wide Infections LeaderBoard</p>
                     {
                         ft.gameOver.map((item, i) => {
                             return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>

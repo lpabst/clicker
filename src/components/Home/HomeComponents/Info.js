@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 
 class Info extends Component {
 
+    formatMoney(amt){
+        return Math.round(amt).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
     formatNumber(amt){
         return amt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
@@ -19,7 +23,7 @@ class Info extends Component {
                 <p className='timer'>Time To Infect One Million: {this.props.timeMillion}</p>
                 <p className='timer'>Time To Infect One Billion: {this.props.timeBillion}</p>
                 <p className='timer'>Time To Infect The Whole World: {this.props.timeGameOver}</p>
-                <p className='score'>Money: ${this.formatNumber(this.props.money)}</p>
+                <p className='score'>Money: ${this.formatMoney(this.props.money)}</p>
                 <p className='timer'>Incrementer (INC): {this.formatNumber(inc) + (inc > 1 ? ' People' : ' Person')} infected at a time</p>
                 <p className='timer'>Interval (Rate): {(this.props.autoInfectorInterval / 1000).toFixed(3)} seconds</p>
             </section>

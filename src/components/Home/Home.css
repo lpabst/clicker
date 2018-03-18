@@ -108,6 +108,7 @@
 @media(min-width: 815px){
     .leaderboard{
         width: 800px;
+        height: auto;
         overflow-y: hidden;
         padding: 20px 0px 0px 20px;
     }
