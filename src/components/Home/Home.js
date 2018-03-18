@@ -54,7 +54,7 @@ class Home extends Component {
           cost: 80
         },
         {
-          title: 'Hire Employee (auto click)',
+          title: 'Hire Manager (auto click)',
           click: (e) => this.buyAutoInfecter(e, 90),
           show: 'autoInfect',
           cost: 90,
@@ -90,16 +90,16 @@ class Home extends Component {
           cost: 2000
         },
         {
-          title: 'Infected Sodas (INC+6)',
-          click: (e) => this.upgradeIncrementor(e, 'infectedSodas', 2200, false, 6),
-          show: 'infectedSodas',
-          cost: 2200
-        },
-        {
           title: 'Infected Water (Rate/3)',
           click: (e) => this.upgradeInterval(e, 'infectedWater', 2000, true, 0.333),
           show: 'infectedWater',
           cost: 2000
+        },
+        {
+          title: 'Infected Sodas (INC+6)',
+          click: (e) => this.upgradeIncrementor(e, 'infectedSodas', 2200, false, 6),
+          show: 'infectedSodas',
+          cost: 2200
         },
         {
           title: 'Marketing Strategy #1: "It\'s cool to be sick" (INC*5)',
