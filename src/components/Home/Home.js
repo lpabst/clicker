@@ -512,6 +512,18 @@ class Home extends Component {
     })
   }
 
+  logout(){
+    axios.post('/api/logout')
+    .then( res => {
+      console.log(res);
+      if (res.data && !res.data.match(/error/)){
+        let newUrl = window.location.href.replace('/home', '/');
+        window.location.href = newUrl;
+      }
+    })
+    .catch(err=>{});
+  }
+
   render() {
     return (
       <div className="home">
@@ -565,6 +577,8 @@ class Home extends Component {
           <div className='btn' onClick={this.toggleLeaderBoard}>LeaderBoard</div>
 
           {this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
+
+          <div className='btn' onClick={this.logout}><p>Logout</p></div>
 
         </div>
       </div>

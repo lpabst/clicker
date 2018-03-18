@@ -21,6 +21,11 @@ module.exports = {
             }).catch(err => { });
     },
 
+    logout: (req, res) => {
+        req.session.username = null;
+        return res.status(200).send('ok');
+    },
+
     createAccount: (req, res) => {
         const db = app.get('db');
         let {newUsername, newPassword} = req.body;
