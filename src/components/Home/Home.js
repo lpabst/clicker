@@ -30,6 +30,7 @@ class Home extends Component {
     this.state = {
       username: '',
       gameRunning: false,
+      gameOver: false,
       clicks: 0,
       numInfected: 0,
       money: 100,
@@ -275,7 +276,7 @@ class Home extends Component {
 
   // When user buys the auto clicker, this function gets called, so I pass in the closeShop variable so that when the user clicks it closes the shop, but when the computer clicks it can stay open
   userClick(closeShop){
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -384,7 +385,7 @@ class Home extends Component {
 
   buyAutoInfecter(e, cost){
     e.stopPropagation();
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -406,7 +407,7 @@ class Home extends Component {
   upgradeInterval(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
 
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -438,7 +439,7 @@ class Home extends Component {
   upgradeIncrementor(e, upgradeName, cost, isPercentUpgrade, upgradeAmt){
     e.stopPropagation();
 
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -461,7 +462,7 @@ class Home extends Component {
   doubleInfectionInc(e, cost){
     e.stopPropagation();
 
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -477,7 +478,7 @@ class Home extends Component {
   buyInfections(e, cost, peopleInfected){
     e.stopPropagation();
 
-    if (!this.state.gameRunning){
+    if (!this.state.gameRunning || this.state.gameOver){
       return;
     }
 
@@ -505,7 +506,10 @@ class Home extends Component {
 
   endGame(){
     clearInterval(this.timer);
-    return this.setState({gameRunning: false})
+    return this.setState({
+      gameOver: true,
+      showLeaderBoard: true,
+    })
   }
 
   render() {
