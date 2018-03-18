@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import './Login.css';
 
 import axios from 'axios';
@@ -28,8 +29,7 @@ class Login extends Component {
     })
     .then( res => {
       if (res.data === 'ok'){
-          let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
-          window.location.href = newUrl;
+          document.getElementById('homeLink').click();
       }else if (res.data.match(/error/)){
         alert(res.data);
       }else{
@@ -85,6 +85,8 @@ class Login extends Component {
         <p>Play As A Guest</p>
         <input onChange={(e) => this.setState({guestUsername: e.target.value})} placeholder='Guest Username' />
         <button onClick={this.playAsGuest} >Play!</button>
+
+        <Link to='/home' id='homeLink' style={{display: 'none'}}></Link>
 
       </section>
     );

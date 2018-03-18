@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import './Home.css';
 
 import Info from './HomeComponents/Info.js';
@@ -523,8 +524,7 @@ class Home extends Component {
     .then( res => {
       console.log(res);
       if (res.data && !res.data.match(/error/)){
-        let newUrl = window.location.href.replace('/home', '/');
-        window.location.href = newUrl;
+        document.getElementById('logoutLink').click();
       }
     })
     .catch(err=>{});
@@ -585,6 +585,8 @@ class Home extends Component {
           {this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
 
           <div className='btn' onClick={this.logout}><p>Logout</p></div>
+
+          <Link to='/' id='loginLink' style={{display: 'none'}}></Link>
 
         </div>
       </div>
