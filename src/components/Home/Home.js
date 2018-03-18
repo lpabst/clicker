@@ -28,6 +28,7 @@ class Home extends Component {
     this.getNumInfected = this.getNumInfected.bind(this);
 
     this.state = {
+      username: '',
       gameRunning: false,
       clicks: 0,
       numInfected: 0,
@@ -227,15 +228,16 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    // Gets the leaderboard the current user's username
     this.getLeaderBoard();
   }
 
   getLeaderBoard(){
     axios.get('/api/leaderboard')
     .then( res => {
-      console.log(res);
       this.setState({
-        fastestTimes: res.data.leaders
+        fastestTimes: res.data.leaders,
+        username: res.data.username
       })
     })
     .catch(err => console.log(err));
@@ -510,6 +512,10 @@ class Home extends Component {
     return (
       <div className="home">
         <div id='home_wrapper' onClick={() => this.userClick(true)} onKeyDown={this.handleKeyPress} tabIndex='0' autoFocus='true' >
+
+          <div className='userProfile'>
+            <p>{this.state.username}</p>
+          </div>
 
           { this.state.gameRunning ?
               <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand} 

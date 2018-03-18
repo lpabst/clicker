@@ -12,7 +12,9 @@ module.exports = {
         .then( bLeaders => {
           db.gameOverLeaders()
           .then( goLeaders => {
+            let username = req.session.username || 'Not Logged In';
             return res.status(200).send({
+              username: username,
               leaders: {
                 thousand: tLeaders,
                 million: mLeaders,
