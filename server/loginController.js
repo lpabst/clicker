@@ -13,10 +13,8 @@ module.exports = {
         db.login([username, password])
             .then(user => {
                 if (!user[0]){
-                    console.log('no user');
                     return res.status(200).send('no user found with that username/password');
                 }else if (user[0]){
-                    console.log('found user');
                     req.session.username = user[0].username
                     return res.status(200).send('ok');
                 }
@@ -37,7 +35,7 @@ module.exports = {
                 return res.status(200).send('error. username is taken');
             }else{
                 db.createAccount([newUsername, newPassword])
-                    .then(user => {
+                .then(user => {
                         req.session.username = newUsername;
                         return res.status(200).send('ok');
                     }).catch(err => { });

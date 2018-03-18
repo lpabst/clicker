@@ -60,7 +60,6 @@ class Login extends Component {
         guestUsername: this.state.guestUsername,
     })
     .then( res => {
-        console.log(res);
         if (res.data === 'ok'){
             let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
             window.location.href = newUrl;
