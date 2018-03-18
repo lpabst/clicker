@@ -586,7 +586,7 @@ class Home extends Component {
 
           <div className='btn' onClick={this.logout}><p>Logout</p></div>
 
-          <Link to='/' id='loginLink' style={{display: 'none'}}></Link>
+          <Link to='/' id='logoutLink' style={{display: 'none'}}></Link>
 
         </div>
       </div>

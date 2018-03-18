@@ -46,8 +46,7 @@ class Login extends Component {
     })
     .then( res => {
       if (res.data === 'ok'){
-          let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
-          window.location.href = newUrl;
+        document.getElementById('homeLink').click();
       }else if (res.data.match(/error/)){
         alert(res.data);
       }
@@ -60,9 +59,9 @@ class Login extends Component {
         guestUsername: this.state.guestUsername,
     })
     .then( res => {
+        console.log(res);
         if (res.data === 'ok'){
-            let newUrl = window.location.href + window.location.href.endsWith('/') ? 'home' : '/home';
-            window.location.href = newUrl;
+          document.getElementById('homeLink').click();
         }
     })
     .catch(err=>{});
