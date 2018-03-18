@@ -41,7 +41,7 @@ module.exports = {
     .then( tLeaders => {
       let isRecord = false;
       for (let i = 0; i < tLeaders.length; i++){
-        if (timeThousand < tLeaders[i].score){
+        if (timeThousand/1000 < tLeaders[i].score){
           isRecord = true;
           let user = req.session.username || 'anonymous';
           i = tLeaders.length + 1;
@@ -66,7 +66,7 @@ module.exports = {
     .then( mLeaders => {
       let isRecord = false;
       for (let i = 0; i < mLeaders.length; i++){
-        if (timeMillion < mLeaders[i].score){
+        if (timeMillion/1000 < mLeaders[i].score){
           // console.log('new record');
           isRecord = true;
           let user = req.session.username || 'anonymous';
@@ -94,7 +94,7 @@ module.exports = {
     .then( bLeaders => {
       let isRecord = false;
       for (let i = 0; i < bLeaders.length; i++){
-        if (timeBillion < bLeaders[i].score){
+        if (timeBillion/1000 < bLeaders[i].score){
           isRecord = true;
           let user = req.session.username || 'anonymous';
           i = bLeaders.length + 1;
@@ -119,7 +119,7 @@ module.exports = {
     .then( goLeaders => {
       let isRecord = false;
       for (let i = 0; i < goLeaders.length; i++){
-        if (timeGameOver < goLeaders[i].score){
+        if (timeGameOver/1000 < goLeaders[i].score){
           isRecord = true;
           let user = req.session.username || 'anonymous';
           i = goLeaders.length + 1;

@@ -31,7 +31,7 @@ class Home extends Component {
       gameRunning: false,
       clicks: 0,
       numInfected: 0,
-      money: 1000000000,
+      money: 100,
       moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
@@ -277,10 +277,10 @@ class Home extends Component {
       return;
     }
 
-    // Check for script that is clicking over 100 times per second on average
+    // Check for script that is clicking over 70 times per second on average
     let timer = document.getElementById('timer').innerText;
     timer = Math.ceil(timer.replace(/s/, ''));
-    if (timer && this.state.clicks / timer > 100){
+    if (timer && this.state.clicks / timer > 70){
       alert('Cheater! No scripts allowed');
       return this.endGame();
     }
@@ -315,7 +315,7 @@ class Home extends Component {
       this.setState({sentThousand: true, timeThousand: '...'});
       axios.post('/api/timeThousand')
       .then( res => {
-        this.setState({timeThousand: res.data.time/1000 + 's'})
+        this.setState({timeThousand: res.data.time/1000 + 's'});
         if (res.data.isRecord){
           this.getLeaderBoard();
         }
