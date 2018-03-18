@@ -217,6 +217,12 @@ class Home extends Component {
           show: 'always',
           cost: 850000
         },
+        {
+          title: 'Pay 10,000,000 People To Infect Themselves (No Money Reward)',
+          click: (e) => this.buyInfections(e, 8250000, 10000000),
+          show: 'always',
+          cost: 8250000
+        },
       ],
       fastestTimes: {
         thousand: [1000, 1120.20, 1253.36, 1855.32, 2210.25],
