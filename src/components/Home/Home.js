@@ -242,7 +242,6 @@ class Home extends Component {
   getLeaderBoard(){
     axios.get('/api/leaderboard')
     .then( res => {
-      console.log(res);
       this.setState({
         fastestTimes: res.data.leaders,
         username: res.data.username
