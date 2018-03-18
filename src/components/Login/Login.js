@@ -32,6 +32,8 @@ class Login extends Component {
           window.location.href = newUrl;
       }else if (res.data.match(/error/)){
         alert(res.data);
+      }else{
+        alert(res.data);
       }
     })
     .catch(err=>{});

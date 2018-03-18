@@ -31,7 +31,7 @@ class Home extends Component {
       gameRunning: false,
       clicks: 0,
       numInfected: 0,
-      money: 100000000,
+      money: 1000000000,
       moneyMultiplier: 1,
       autoInfectorIncrementer: 1,
       autoInfectorInterval: 1500,
@@ -243,6 +243,10 @@ class Home extends Component {
 
   startGame(){
     this.setState({
+      sentThousand: false,
+      sentMillion: false,
+      sentBillion: false,
+      sentGameOver: false,
       gameRunning: true
     }, () => {
       // Focus the home wrapper div to enable the space bar click functionality
@@ -312,7 +316,6 @@ class Home extends Component {
       axios.post('/api/timeThousand')
       .then( res => {
         this.setState({timeThousand: res.data.time/1000 + 's'})
-        console.log(res);
         if (res.data.isRecord){
           this.getLeaderBoard();
         }
@@ -324,6 +327,9 @@ class Home extends Component {
       axios.post('/api/timeMillion')
       .then( res => {
         this.setState({timeMillion: res.data.time/1000 + 's'})
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
       })
       .catch(err => {})
     }
@@ -332,6 +338,9 @@ class Home extends Component {
       axios.post('/api/timeBillion')
       .then( res => {
         this.setState({timeBillion: res.data.time/1000 + 's'})
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
       })
       .catch(err => {})
     }
@@ -341,6 +350,9 @@ class Home extends Component {
       axios.post('/api/timeGameOver')
       .then( res => {
         this.setState({timeGameOver: res.data.time/1000 + 's'})
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
       })
       .catch(err => {})
     }

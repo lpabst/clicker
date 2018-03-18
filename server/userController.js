@@ -67,8 +67,11 @@ module.exports = {
       let isRecord = false;
       for (let i = 0; i < mLeaders.length; i++){
         if (timeMillion < mLeaders[i].score){
+          // console.log('new record');
           isRecord = true;
           let user = req.session.username || 'anonymous';
+          // console.log(user);
+          // console.log(timeMillion);
           i = mLeaders.length + 1;
           db.newMillionRecord([timeMillion/1000, user])
           .then( done => {
