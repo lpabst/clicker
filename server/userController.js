@@ -2,6 +2,7 @@ var app = require('./index.js');
 const numRowsToShowPerLeaderboard = 10;
 const maxRowsToKeepInDBPerLeaderboard = 100;
 
+// goes through each of the leaderboards and deletes anything over the top 100 records
 const cleanLeaderboards = () => {
   var db = app.get('db');
   let calls = ['cleanThousand', 'cleanTenTh', 'cleanHundredTh', 'cleanMillion', 'cleanBillion', 'cleanGameOver'];
@@ -11,6 +12,7 @@ const cleanLeaderboards = () => {
   }
 }
 
+// Checks the user's time against the top times to see if the user has beaten any of the previous records
 const checkIfTimeIsANewRecord = (userTime, leaders) => {
   let isRecord = false;
   for (let i = 0; i < leaders.length; i++){
@@ -21,6 +23,7 @@ const checkIfTimeIsANewRecord = (userTime, leaders) => {
   return false;
 }
 
+// gets the top times for whichever leaderboard we pass it, checks if the user has beaten any of those times (using the function above), then if so enters the user's time into the db. Either way it alerts the user of their official time and whether or not it was a new record
 const handleRecordTime = (call1, call2, userTime, req, res) => {
   let user = req.session.username || 'anonymous';
   var db = app.get('db');
@@ -40,6 +43,7 @@ const handleRecordTime = (call1, call2, userTime, req, res) => {
 }
 
 module.exports = {
+  // Gets all of the leaderboards and sends that info to the front end
   getLeaderboard: function(req, res){
     const db = app.get('db');
     
@@ -76,19 +80,15 @@ module.exports = {
 
   },
   
+  // Creates a new date and sets the start time on req.session. Then it calls the function that cleans the leaderboard DB tables to keep them relatively small
   startTimer: (req, res) => {
     startTime = new Date().getTime();
     req.session.startTime = startTime;
     res.status(200).send('timer started');
     return cleanLeaderboards();
-    // var db = app.get('db');
-    // for (let i = 0; i < 90; i++){
-    //   console.log('inserting record');
-    //   db.insertTestScore()
-    //   .then(res=>{}).catch(err=>{});
-    // }
   },
   
+  // the rest of these use the functions above to handle whether or not the users's time is a new record
   timeThousand: (req, res) => {
     var db = app.get('db');
     let timeThousand = new Date().getTime() - req.session.startTime;
