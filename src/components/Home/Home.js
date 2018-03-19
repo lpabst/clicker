@@ -242,6 +242,9 @@ class Home extends Component {
   componentDidMount(){
     // Gets the leaderboard the current user's username
     this.getLeaderBoard();
+    axios.post('/api/captureAnalytics', {
+      metric: 'homepagehits'
+    })
   }
 
   getLeaderBoard(){

@@ -1,4 +1,25 @@
 
+-- select * from thousandLeaders
+-- select * from tenThLeaders
+-- select * from hundredThLeaders
+-- select * from millionLeaders
+-- select * from billionLeaders
+-- select * from gameOverLeaders
+-- order by score asc
+
+create table clickerAnalytics(
+    id serial primary key,
+    loginpagehits integer,
+    homepagehits integer,
+    gamestarts integer,
+    thousandcompletes integer,
+    tenthcompletes integer,
+    hundredthcompletes integer,
+    millioncompletes integer,
+    billioncompletes integer,
+    gameovercompletes integer
+)
+
 create table clickerUsers(
     id serial primary key,
     username varchar(255),

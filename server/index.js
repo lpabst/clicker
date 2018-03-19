@@ -34,6 +34,7 @@ app.post('/api/createAccount', loginController.createAccount);
 app.post('/api/playAsGuest', loginController.playAsGuest);
 
 app.get('/api/leaderboard', userController.getLeaderboard);
+app.post('/api/captureAnalytics', userController.captureAnalyticsInfo);
 app.post('/api/startTimer', userController.startTimer); 
 app.post('/api/timeThousand', userController.timeThousand);
 app.post('/api/timeTenThousand', userController.timeTenThousand);

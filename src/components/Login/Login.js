@@ -22,6 +22,12 @@ class Login extends Component {
     this.playAsGuest = this.playAsGuest.bind(this);
   }
 
+  componentDidMount(){
+    axios.post('/api/captureAnalytics', {
+      metric: 'loginpagehits'
+    })
+  }
+
   login(){
     axios.post('/api/login', {
         username: this.state.username,
