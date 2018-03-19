@@ -3,6 +3,7 @@ const numRowsToShowPerLeaderboard = 10;
 const maxRowsToKeepInDBPerLeaderboard = 100;
 
 const cleanLeaderboards = () => {
+  var db = app.get('db');
   let calls = ['cleanThousand', 'cleanTenTh', 'cleanHundredTh', 'cleanMillion', 'cleanBillion', 'cleanGameOver'];
   for (let i = 0; i < calls.length; i++){
     db[calls[i]](maxRowsToKeepInDBPerLeaderboard)
@@ -78,8 +79,14 @@ module.exports = {
   startTimer: (req, res) => {
     startTime = new Date().getTime();
     req.session.startTime = startTime;
-    cleanLeaderboards();
-    return res.status(200).send('timer started');
+    res.status(200).send('timer started');
+    return cleanLeaderboards();
+    // var db = app.get('db');
+    // for (let i = 0; i < 90; i++){
+    //   console.log('inserting record');
+    //   db.insertTestScore()
+    //   .then(res=>{}).catch(err=>{});
+    // }
   },
   
   timeThousand: (req, res) => {

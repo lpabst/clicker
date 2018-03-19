@@ -48,3 +48,15 @@ insert into clickerUsers(username, password) values ('SueB', 'SuzieGirl')
 select * from thousandLeaders
 order by score asc
 limit 5
+
+/********** javascript for massive ***********/
+
+  // db.cleanThousand(maxRowsToKeepInDBPerLeaderboard)
+  // .then( res => {
+  //   console.log(res);
+  // })
+  
+  // for (let i = 0; i < 100; i++){
+  //   let score = 800 + i;
+  //   db.insertTestScore([score]).then(res=>{}).catch(err=>{});
+  // }
