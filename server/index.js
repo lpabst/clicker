@@ -36,6 +36,8 @@ app.post('/api/playAsGuest', loginController.playAsGuest);
 app.get('/api/leaderboard', userController.getLeaderboard);
 app.post('/api/startTimer', userController.startTimer); 
 app.post('/api/timeThousand', userController.timeThousand);
+app.post('/api/timeTenThousand', userController.timeTenThousand);
+app.post('/api/timeHundredThousand', userController.timeHundredThousand);
 app.post('/api/timeMillion', userController.timeMillion);
 app.post('/api/timeBillion', userController.timeBillion);
 app.post('/api/timeGameOver', userController.timeGameOver);

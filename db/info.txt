@@ -11,6 +11,18 @@ create table thousandLeaders(
     username text
 )
 
+create table tenThLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
+create table hundredThLeaders(
+    id serial primary key,
+    score integer,
+    username text
+)
+
 create table millionLeaders(
     id serial primary key,
     score integer,
