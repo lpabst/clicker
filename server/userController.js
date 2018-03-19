@@ -23,7 +23,7 @@ const captureAnalytics = (whichMetric) => {
         let {loginpagehits, homepagehits, gamestarts, thousandcompletes, tenthcompletes, hundredthcompletes, millioncompletes, billioncompletes, gameovercompletes} = newAnalytics;
         db.updateAnalytics([loginpagehits, homepagehits, gamestarts, thousandcompletes, tenthcompletes, hundredthcompletes, millioncompletes, billioncompletes, gameovercompletes])
           .then( res => {
-            console.log(res);
+            // console.log(res);
           })
           .catch(err => {});
       })

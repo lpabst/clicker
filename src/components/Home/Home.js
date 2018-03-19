@@ -22,6 +22,7 @@ class Home extends Component {
     this.toggleRiskShop = this.toggleRiskShop.bind(this);
     this.toggleRules = this.toggleRules.bind(this);
     this.toggleLeaderBoard = this.toggleLeaderBoard.bind(this);
+    this.toggleNewGameBox = this.toggleNewGameBox.bind(this);
     this.buyAutoInfecter = this.buyAutoInfecter.bind(this);
     this.upgradeIncrementor = this.upgradeIncrementor.bind(this);
     this.upgradeInterval = this.upgradeInterval.bind(this);
@@ -43,6 +44,7 @@ class Home extends Component {
       showRiskShop: false,
       showRules: false,
       showLeaderBoard: false,
+      showNewGameBox: false,
       autoInfect: false,
       timeThousand: 'N/A',
       timeTenThousand: 'N/A',
@@ -296,6 +298,7 @@ class Home extends Component {
 
   startNewGame(e){
     e.stopPropagation();
+
     // Stop the previous game's timer
     clearInterval(this.timer);
 
@@ -323,6 +326,7 @@ class Home extends Component {
       showRiskShop: false,
       showRules: false,
       showLeaderBoard: false,
+      showNewGameBox: false,
       autoInfect: false,
       timeThousand: 'N/A',
       timeTenThousand: 'N/A',
@@ -469,6 +473,12 @@ class Home extends Component {
   toggleLeaderBoard(e){
     e.stopPropagation();
     this.setState({showLeaderBoard: !this.state.showLeaderBoard});
+  }
+
+  toggleNewGameBox(e){
+    this.setState({
+      showNewGameBox: !this.state.showNewGameBox
+    })
   }
 
   buyAutoInfecter(e, cost){
@@ -664,10 +674,19 @@ class Home extends Component {
 
           <div className='btn' onClick={this.toggleLeaderBoard}>LeaderBoard</div>
 
-          {this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
+          { this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
 
           { this.state.gameRunning ? 
-              <div className='start_btn btn' onClick={this.startNewGame} >New Game</div>
+              <div className='start_btn btn' onClick={this.toggleNewGameBox} >New Game</div>
+            : null
+          }
+
+          { this.state.showNewGameBox ? 
+              <div className='newGameBox'>
+                <p>Are you sure you want to start over?</p>
+                <button onClick={this.startNewGame}>Yes</button>
+                <button onClick={this.toggleNewGameBox}>No</button>
+              </div>
             : null
           }
 
