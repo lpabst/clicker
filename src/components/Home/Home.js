@@ -292,10 +292,10 @@ class Home extends Component {
       return;
     }
 
-    // Check for script that is clicking over 70 times per second on average
+    // Check for script that is clicking over 45 times per second on average
     let timer = document.getElementById('timer') ? document.getElementById('timer').innerText : null;
     timer = timer ? Math.ceil(timer.replace(/s/, '')) : timer;
-    if (timer && this.state.clicks / timer > 70){
+    if (timer && this.state.clicks / timer > 45){
       alert('Cheater! No scripts allowed');
       return this.endGame();
     }
