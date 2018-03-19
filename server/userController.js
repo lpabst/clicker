@@ -1,16 +1,45 @@
 var app = require('./index.js');
+const numRowsPerLeaderboard = 10;
+
+const checkIfTimeIsANewRecord = (userTime, leaders) => {
+  let isRecord = false;
+  for (let i = 0; i < leaders.length; i++){
+    if (userTime/1000 < leaders[i].score){
+      return true;
+    }
+  }
+  return false;
+}
+
+const handleRecordTime = (call1, call2, userTime, req, res) => {
+  let user = req.session.username || 'anonymous';
+  var db = app.get('db');
+  db[call1]([numRowsPerLeaderboard])
+  .then( leaders => {
+    let isRecord = checkIfTimeIsANewRecord(userTime, leaders);
+    if (isRecord){
+      db[call2]([userTime/1000, user])
+      .then( done => {
+        return res.status(200).send({time: userTime, isRecord: true});
+      })
+      .catch(err=>{});
+    }else{
+      return res.status(200).send({time: userTime, isRecord: false});
+    }
+  })
+}
 
 module.exports = {
   getLeaderboard: function(req, res){
     const db = app.get('db');
     
-    db.thousandLeaders()
+    db.thousandLeaders([numRowsPerLeaderboard])
     .then( tLeaders => {
-      db.millionLeaders()
+      db.millionLeaders([numRowsPerLeaderboard])
       .then( mLeaders => {
-        db.billionLeaders()
+        db.billionLeaders([numRowsPerLeaderboard])
         .then( bLeaders => {
-          db.gameOverLeaders()
+          db.gameOverLeaders([numRowsPerLeaderboard])
           .then( goLeaders => {
             let username = req.session.username || 'Not Logged In';
             return res.status(200).send({
@@ -39,32 +68,13 @@ module.exports = {
     var db = app.get('db');
     let endTime = new Date().getTime();
     let timeThousand = endTime - req.session.startTime;
-    db.thousandLeaders()
-    .then( tLeaders => {
-      let isRecord = false;
-      for (let i = 0; i < tLeaders.length; i++){
-        if (timeThousand/1000 < tLeaders[i].score){
-          isRecord = true;
-          let user = req.session.username || 'anonymous';
-          i = tLeaders.length + 1;
-          db.newThousandRecord([timeThousand/1000, user])
-          .then( done => {
-            return res.status(200).send({time: timeThousand, isRecord: true});
-          })
-          .catch(err=>{});
-        }
-      }
-      if (!isRecord){
-        return res.status(200).send({time: timeThousand, isRecord: false});
-      }
-    })
-    .catch(err=>{})
+    handleRecordTime('thousandLeaders', 'newThousandRecord', timeThousand, req, res);
   },
   
   timeMillion: (req, res) => {
     var db = app.get('db');
     let timeMillion = new Date().getTime() - req.session.startTime;
-    db.millionLeaders()
+    db.millionLeaders([numRowsPerLeaderboard])
     .then( mLeaders => {
       let isRecord = false;
       for (let i = 0; i < mLeaders.length; i++){
@@ -92,7 +102,7 @@ module.exports = {
   timeBillion: (req, res) => {
     var db = app.get('db');
     let timeBillion = new Date().getTime() - req.session.startTime;
-    db.billionLeaders()
+    db.billionLeaders([numRowsPerLeaderboard])
     .then( bLeaders => {
       let isRecord = false;
       for (let i = 0; i < bLeaders.length; i++){
@@ -117,7 +127,7 @@ module.exports = {
   timeGameOver: (req, res) => {
     var db = app.get('db');
     let timeGameOver = new Date().getTime() - req.session.startTime;
-    db.gameOverLeaders()
+    db.gameOverLeaders([numRowsPerLeaderboard])
     .then( goLeaders => {
       let isRecord = false;
       for (let i = 0; i < goLeaders.length; i++){

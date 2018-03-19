@@ -1,3 +1,3 @@
 select * from millionLeaders
 order by score asc
-limit 10
+limit $1

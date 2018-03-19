@@ -226,10 +226,10 @@ class Home extends Component {
         },
       ],
       fastestTimes: {
-        thousand: [1000, 1120.20, 1253.36, 1855.32, 2210.25],
-        million: [321, 323, 354, 545, 896],
-        billion: [125, 126, 127, 159, 189],
-        gameOver: [1, 2, 3, 4, 5],
+        thousand: [],
+        million: [],
+        billion: [],
+        gameOver: [],
       }
     }
 
@@ -241,6 +241,7 @@ class Home extends Component {
   }
 
   getLeaderBoard(){
+    console.log('gettingleaderboard')
     axios.get('/api/leaderboard')
     .then( res => {
       this.setState({
