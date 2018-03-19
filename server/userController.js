@@ -1,5 +1,14 @@
 var app = require('./index.js');
-const numRowsPerLeaderboard = 10;
+const numRowsToShowPerLeaderboard = 10;
+const maxRowsToKeepInDBPerLeaderboard = 100;
+
+const cleanLeaderboards = () => {
+  let calls = ['cleanThousand', 'cleanTenTh', 'cleanHundredTh', 'cleanMillion', 'cleanBillion', 'cleanGameOver'];
+  for (let i = 0; i < calls.length; i++){
+    db[calls[i]](maxRowsToKeepInDBPerLeaderboard)
+    .then(res=>{}).catch(err=>{});
+  }
+}
 
 const checkIfTimeIsANewRecord = (userTime, leaders) => {
   let isRecord = false;
@@ -14,7 +23,7 @@ const checkIfTimeIsANewRecord = (userTime, leaders) => {
 const handleRecordTime = (call1, call2, userTime, req, res) => {
   let user = req.session.username || 'anonymous';
   var db = app.get('db');
-  db[call1]([numRowsPerLeaderboard])
+  db[call1]([numRowsToShowPerLeaderboard])
   .then( leaders => {
     let isRecord = checkIfTimeIsANewRecord(userTime, leaders);
     if (isRecord){
@@ -33,17 +42,17 @@ module.exports = {
   getLeaderboard: function(req, res){
     const db = app.get('db');
     
-    db.thousandLeaders([numRowsPerLeaderboard])
+    db.thousandLeaders([numRowsToShowPerLeaderboard])
     .then( thousandLeaders => {
-      db.tenThLeaders([numRowsPerLeaderboard])
+      db.tenThLeaders([numRowsToShowPerLeaderboard])
       .then( tenThLeaders => {
-        db.hundredThLeaders([numRowsPerLeaderboard])
+        db.hundredThLeaders([numRowsToShowPerLeaderboard])
         .then( hundredThLeaders => {
-          db.millionLeaders([numRowsPerLeaderboard])
+          db.millionLeaders([numRowsToShowPerLeaderboard])
           .then( mLeaders => {
-            db.billionLeaders([numRowsPerLeaderboard])
+            db.billionLeaders([numRowsToShowPerLeaderboard])
             .then( bLeaders => {
-              db.gameOverLeaders([numRowsPerLeaderboard])
+              db.gameOverLeaders([numRowsToShowPerLeaderboard])
               .then( goLeaders => {
                 let username = req.session.username || 'Not Logged In';
                 return res.status(200).send({
@@ -69,6 +78,7 @@ module.exports = {
   startTimer: (req, res) => {
     startTime = new Date().getTime();
     req.session.startTime = startTime;
+    cleanLeaderboards();
     return res.status(200).send('timer started');
   },
   
