@@ -21,8 +21,6 @@ const captureAnalytics = (whichMetric) => {
         let newAnalytics = analytics[0];
         newAnalytics[whichMetric] ++;
         let {loginpagehits, homepagehits, gamestarts, thousandcompletes, tenthcompletes, hundredthcompletes, millioncompletes, billioncompletes, gameovercompletes} = newAnalytics;
-        console.log(newAnalytics);
-  
         db.updateAnalytics([loginpagehits, homepagehits, gamestarts, thousandcompletes, tenthcompletes, hundredthcompletes, millioncompletes, billioncompletes, gameovercompletes])
           .then( res => {
             console.log(res);

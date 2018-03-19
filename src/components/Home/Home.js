@@ -14,6 +14,7 @@ class Home extends Component {
     // bindings go above state so that I can use them in my shopItems array
     this.getLeaderBoard = this.getLeaderBoard.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.startNewGame = this.startNewGame.bind(this);
     this.userClick = this.userClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handletimers = this.handletimers.bind(this);
@@ -49,6 +50,12 @@ class Home extends Component {
       timeMillion: 'N/A',
       timeBillion: 'N/A',
       timeGameOver: 'N/A',
+      sentThousand: false,
+      sentTenThousand: false,
+      sentHundredThousand: false,
+      sentMillion: false,
+      sentBillion: false,
+      sentGameOver: false,
       shopItems: [
         {
           title: 'Infected Bandaids (INC*2)',
@@ -262,6 +269,8 @@ class Home extends Component {
   startGame(){
     this.setState({
       sentThousand: false,
+      sentTenThousand: false,
+      sentHundredThousand: false,
       sentMillion: false,
       sentBillion: false,
       sentGameOver: false,
@@ -283,6 +292,48 @@ class Home extends Component {
       })
       .catch(err=>console.log(err));
     })
+  }
+
+  startNewGame(e){
+    e.stopPropagation();
+    // Stop the previous game's timer
+    clearInterval(this.timer);
+
+    // Set all of the shop items visible for purchase again
+    let newState = this.state;
+    let itemsToPurchase = [];
+    for (let i = 0; i < this.state.shopItems.length; i++){
+      newState[this.state.shopItems[i].show] = false;
+    }
+    for (let i = 0; i < this.state.riskShopItems.length; i++){
+      newState[this.state.riskShopItems[i].show] = false;
+    }
+
+    // reset these values on the new state
+    newState = Object.assign({}, newState, {
+      gameRunning: false,
+      gameOver: false,
+      clicks: 0,
+      numInfected: 0,
+      money: 100,
+      moneyMultiplier: 1,
+      autoInfectorIncrementer: 1,
+      autoInfectorInterval: 1500,
+      showShop: false,
+      showRiskShop: false,
+      showRules: false,
+      showLeaderBoard: false,
+      autoInfect: false,
+      timeThousand: 'N/A',
+      timeTenThousand: 'N/A',
+      timeHundredThousand: 'N/A',
+      timeMillion: 'N/A',
+      timeBillion: 'N/A',
+      timeGameOver: 'N/A',
+    })
+
+    this.setState(newState);
+    this.startGame();
   }
 
   componentWillUnmount(){
@@ -614,6 +665,11 @@ class Home extends Component {
           <div className='btn' onClick={this.toggleLeaderBoard}>LeaderBoard</div>
 
           {this.state.showLeaderBoard ? <LeaderBoard fastestTimes={this.state.fastestTimes} /> : null}
+
+          { this.state.gameRunning ? 
+              <div className='start_btn btn' onClick={this.startNewGame} >New Game</div>
+            : null
+          }
 
           <div className='btn' onClick={this.logout}><p>Logout</p></div>
 
