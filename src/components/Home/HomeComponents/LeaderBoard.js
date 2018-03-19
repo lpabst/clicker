@@ -17,6 +17,24 @@ class LeaderBoard extends Component {
                 </div>
 
                 <div className='leaderboard_section'>
+                    <h6>10-Thousand Infections LeaderBoard</h6>
+                    {
+                        ft.tenThousand.map((item, i) => {
+                            return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>
+                        })
+                    }
+                </div>
+
+                <div className='leaderboard_section'>
+                    <h6>100-Thousand Infections LeaderBoard</h6>
+                    {
+                        ft.hundredThousand.map((item, i) => {
+                            return <p key={i}>{i+1}. {item.score} seconds - {item.username}</p>
+                        })
+                    }
+                </div>
+
+                <div className='leaderboard_section'>
                     <h6>One Million Infections LeaderBoard</h6>
                     {
                         ft.million.map((item, i) => {

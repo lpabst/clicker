@@ -20,6 +20,8 @@ class Info extends Component {
                 <p className='timer'>Total Clicks (including auto clicker): {this.props.clicks}</p>
                 <p className='score'>People Infected: {this.props.getNumInfected()}</p>
                 <p className='timer'>Time To Infect One Thousand: {this.props.timeThousand}</p>
+                <p className='timer'>Time To Infect Ten Thousand: {this.props.timeTenThousand}</p>
+                <p className='timer'>Time To Infect One Hundred Thousand: {this.props.timeHundredThousand}</p>
                 <p className='timer'>Time To Infect One Million: {this.props.timeMillion}</p>
                 <p className='timer'>Time To Infect One Billion: {this.props.timeBillion}</p>
                 <p className='timer'>Time To Infect The Whole World: {this.props.timeGameOver}</p>

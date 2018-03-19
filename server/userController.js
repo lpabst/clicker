@@ -34,23 +34,31 @@ module.exports = {
     const db = app.get('db');
     
     db.thousandLeaders([numRowsPerLeaderboard])
-    .then( tLeaders => {
-      db.millionLeaders([numRowsPerLeaderboard])
-      .then( mLeaders => {
-        db.billionLeaders([numRowsPerLeaderboard])
-        .then( bLeaders => {
-          db.gameOverLeaders([numRowsPerLeaderboard])
-          .then( goLeaders => {
-            let username = req.session.username || 'Not Logged In';
-            return res.status(200).send({
-              username: username,
-              leaders: {
-                thousand: tLeaders,
-                million: mLeaders,
-                billion: bLeaders,
-                gameOver: goLeaders,
-              }
-            })
+    .then( thousandLeaders => {
+      db.tenThLeaders([numRowsPerLeaderboard])
+      .then( tenThLeaders => {
+        db.hundredThLeaders([numRowsPerLeaderboard])
+        .then( hundredThLeaders => {
+          db.millionLeaders([numRowsPerLeaderboard])
+          .then( mLeaders => {
+            db.billionLeaders([numRowsPerLeaderboard])
+            .then( bLeaders => {
+              db.gameOverLeaders([numRowsPerLeaderboard])
+              .then( goLeaders => {
+                let username = req.session.username || 'Not Logged In';
+                return res.status(200).send({
+                  username: username,
+                  leaders: {
+                    thousand: thousandLeaders,
+                    tenThousand: tenThLeaders,
+                    hundredThousand: hundredThLeaders,
+                    million: mLeaders,
+                    billion: bLeaders,
+                    gameOver: goLeaders,
+                  }
+                })
+              }).catch(err => {});
+            }).catch(err => {});
           }).catch(err => {});
         }).catch(err => {});
       }).catch(err => {});

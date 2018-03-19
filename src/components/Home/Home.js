@@ -44,6 +44,8 @@ class Home extends Component {
       showLeaderBoard: false,
       autoInfect: false,
       timeThousand: 'N/A',
+      timeTenThousand: 'N/A',
+      timeHundredThousand: 'N/A',
       timeMillion: 'N/A',
       timeBillion: 'N/A',
       timeGameOver: 'N/A',
@@ -227,6 +229,8 @@ class Home extends Component {
       ],
       fastestTimes: {
         thousand: [],
+        tenThousand: [],
+        hundredThousand: [],
         million: [],
         billion: [],
         gameOver: [],
@@ -327,6 +331,28 @@ class Home extends Component {
       axios.post('/api/timeThousand')
       .then( res => {
         this.setState({timeThousand: res.data.time/1000 + 's'});
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
+      })
+      .catch(err => {})
+    }
+    if (!this.state.sentTenThousand && newNumInfected >= 10000){
+      this.setState({sentTenThousand: true, timeTenThousand: '...'});
+      axios.post('/api/timeTenThousand')
+      .then( res => {
+        this.setState({timeTenThousand: res.data.time/1000 + 's'});
+        if (res.data.isRecord){
+          this.getLeaderBoard();
+        }
+      })
+      .catch(err => {})
+    }
+    if (!this.state.sentHundredThousand && newNumInfected >= 100000){
+      this.setState({sentHundredThousand: true, timeHundredThousand: '...'});
+      axios.post('/api/timeHundredThousand')
+      .then( res => {
+        this.setState({timeHundredThousand: res.data.time/1000 + 's'});
         if (res.data.isRecord){
           this.getLeaderBoard();
         }
@@ -541,7 +567,8 @@ class Home extends Component {
           </div>
 
           { this.state.gameRunning ?
-              <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand} 
+              <Info getNumInfected={this.getNumInfected} timeThousand={this.state.timeThousand}
+              timeTenThousand={this.state.timeTenThousand} timeHundredThousand={this.state.timeHundredThousand} 
               timeMillion={this.state.timeMillion} timeBillion={this.state.timeBillion} 
               timeGameOver={this.state.timeGameOver} money={this.state.money} 
               autoInfectorIncrementer={this.state.autoInfectorIncrementer} 
