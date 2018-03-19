@@ -7,37 +7,37 @@ create table clickerUsers(
 
 create table thousandLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
 create table tenThLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
 create table hundredThLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
 create table millionLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
 create table billionLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
 create table gameOverLeaders(
     id serial primary key,
-    score integer,
+    score decimal,
     username text
 )
 
