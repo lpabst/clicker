@@ -341,6 +341,7 @@ class Home extends Component {
 
   componentWillUnmount(){
     clearInterval(this.timer);
+    clearInterval(this.autoInfectorInterval);
   }
 
   // When user buys the auto clicker, this function gets called, so I pass in the closeShop variable so that when the user clicks it closes the shop, but when the computer clicks it can stay open
