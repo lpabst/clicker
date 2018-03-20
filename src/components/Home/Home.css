@@ -96,6 +96,8 @@
     background: #ccc;
     box-shadow: 2px 2px 3px black;
     padding: 5px 1px;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .leaderboard_section{

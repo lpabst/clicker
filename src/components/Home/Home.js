@@ -257,7 +257,6 @@ class Home extends Component {
   }
 
   getLeaderBoard(){
-    console.log('gettingleaderboard')
     axios.get('/api/leaderboard')
     .then( res => {
       this.setState({
@@ -265,7 +264,7 @@ class Home extends Component {
         username: res.data.username
       })
     })
-    .catch(err => console.log(err));
+    .catch(err => {});
   }
 
   startGame(){
@@ -304,7 +303,6 @@ class Home extends Component {
 
     // Set all of the shop items visible for purchase again
     let newState = this.state;
-    let itemsToPurchase = [];
     for (let i = 0; i < this.state.shopItems.length; i++){
       newState[this.state.shopItems[i].show] = false;
     }
