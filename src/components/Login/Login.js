@@ -118,7 +118,10 @@ class Login extends Component {
           <Link to='/home' id='homeLink' style={{display: 'none'}}></Link>
         </div>
 
-        <LeaderBoard fastestTimes={this.state.fastestTimes} />
+        { this.state.fastestTimes.thousand[0] ? 
+            <LeaderBoard fastestTimes={this.state.fastestTimes} /> 
+          : null
+        }
 
       </section>
     );

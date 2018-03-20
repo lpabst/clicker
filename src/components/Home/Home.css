@@ -96,8 +96,6 @@
     background: #ccc;
     box-shadow: 2px 2px 3px black;
     padding: 5px 1px;
-    display: inline-block;
-    vertical-align: top;
 }
 
 .leaderboard_section{
@@ -113,12 +111,15 @@
     margin-bottom: 3px;
 }
 
-@media(min-width: 815px){
+@media(min-width: 900px){
     .leaderboard{
         width: 800px;
         height: auto;
         overflow-y: hidden;
         padding: 20px 0px 0px 20px;
+        display: inline-block;
+        vertical-align: top;
+        transform: scale(0.8);
     }
 
     .leaderboard_section{
