@@ -298,8 +298,9 @@ class Home extends Component {
   startNewGame(e){
     e.stopPropagation();
 
-    // Stop the previous game's timer
+    // Stop the previous game's timer and auto clicker
     clearInterval(this.timer);
+    clearInterval(this.autoInfectorInterval);
 
     // Set all of the shop items visible for purchase again
     let newState = this.state;
@@ -602,6 +603,7 @@ class Home extends Component {
 
   endGame(){
     clearInterval(this.timer);
+    clearInterval(this.autoInfectorInterval);
     return this.setState({
       gameOver: true,
       showLeaderBoard: true,
